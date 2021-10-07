@@ -13,7 +13,8 @@
 
 
  // If this file is called directly, abort.
- defined('ABSPATH') || die;
+ defined('ABSPATH') || exit;
+ 
 
  class MDFCreateDatabaseStructure {
     
@@ -67,7 +68,7 @@
                     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
                     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     PRIMARY KEY (id),
-                    UNIQUE KEY(registration_uuid)
+                    UNIQUE KEY(uuid)
                 ) $collate;
                 CREATE TABLE {$wpdb->prefix}megusta_dynamic_forms_values (
                     id INT(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -83,6 +84,7 @@
     public static function generateDatabaseTables() {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         return dbDelta(self::getDbSchema(), true);
+        
+        // self::updateVersion();        
     }
  }
- 
