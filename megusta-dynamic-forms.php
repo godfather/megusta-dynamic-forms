@@ -18,9 +18,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
-require_once dirname(__FILE__) . '/config/megusta-dynamic-forms-constants.php';
-
-if(!class_exists( 'MegustaDynamicForms')) {
-	require_once dirname(__FILE__) . '/MegustaDynamicForms.php';
-	add_action( 'plugins_loaded', array( 'MegustaDynamicForms', 'init' ));
+if ( ! defined( 'WC_PLUGIN_FILE' ) ) {
+	define( 'MDF_PLUGIN_FILE', __FILE__ );
 }
+
+require_once dirname(__FILE__) . '/config/megusta-dynamic-forms-constants.php';
+require_once dirname(__FILE__) . '/MegustaDynamicForms.php';
+MegustaDynamicForms::init();

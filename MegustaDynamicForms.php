@@ -13,13 +13,13 @@ defined('ABSPATH') || exit;
 
 class MegustaDynamicForms {
     public static function init() {
-        register_activation_hook( __FILE__, ['MegustaDynamicForms', 'activateMegustaDynamicForms']);
-        register_deactivation_hook( __FILE__, ['MegustaDynamicForms', 'deactivateMegustaDynamicForms']);
+        register_activation_hook(MDF_PLUGIN_FILE, ['MegustaDynamicForms', 'activateMegustaDynamicForms']);
+        register_deactivation_hook(MDF_PLUGIN_FILE, ['MegustaDynamicForms', 'deactivateMegustaDynamicForms']);
         add_action('admin_menu', ['MegustaDynamicForms', 'createAdminMenus']);
     }
-
+    
     public static function activateMegustaDynamicForms() {
-        require_once dirname(__FILE__) . '/data/MDFCreateDatabaseStructure.php';
+        require_once dirname(MDF_PLUGIN_FILE) . '/data/MDFCreateDatabaseStructure.php';
         if(class_exists('MDFCreateDatabaseStructure')) {
             MDFCreateDatabaseStructure::generateDatabaseTables();
         }
