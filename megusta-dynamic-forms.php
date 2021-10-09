@@ -18,9 +18,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( ! defined( 'WC_PLUGIN_FILE' ) ) {
-	define( 'MDF_PLUGIN_FILE', __FILE__ );
-}
+//Defines a constant with the plugin main file path
+//It's necessary to avoid bugs on some WP hooks
+if (!defined( 'WC_PLUGIN_FILE')) define( 'MDF_PLUGIN_FILE', __FILE__ );
 
 require_once dirname(__FILE__) . '/config/megusta-dynamic-forms-constants.php';
 require_once dirname(__FILE__) . '/MegustaDynamicForms.php';
