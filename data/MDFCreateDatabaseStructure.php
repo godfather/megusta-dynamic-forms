@@ -83,8 +83,7 @@
 
     public static function generateDatabaseTables() {
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        return dbDelta(self::getDbSchema(), true);
-        
-        // self::updateVersion();        
+        return dbDelta(self::getDbSchema(), true);        
+        self::updateVersion();        
     }
  }
