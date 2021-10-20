@@ -13,6 +13,10 @@ defined('ABSPATH') || exit;
 
 class MegustaDynamicForms {
     public static function init() {
+        require dirname(MDF_PLUGIN_FILE) . '/api/MDFAdminController.php';
+
+        $formController = new MDFAdminController();
+
         register_activation_hook(MDF_PLUGIN_FILE, ['MegustaDynamicForms', 'activateMegustaDynamicForms']);
         register_deactivation_hook(MDF_PLUGIN_FILE, ['MegustaDynamicForms', 'deactivateMegustaDynamicForms']);
         add_action('admin_menu', ['MegustaDynamicForms', 'createAdminMenus']);
@@ -37,6 +41,6 @@ class MegustaDynamicForms {
 
     public static function megustaRootHtml() {
         require_once dirname(__FILE__) . '/data/MDFCreateDatabaseStructure.php';
-        echo '<pre>' .MDFCreateDatabaseStructure::getDbSchema();
+        echo '<pre>'. MEGUSTA_DYNAMIC_FORMS_TABLE;
     }
 }
