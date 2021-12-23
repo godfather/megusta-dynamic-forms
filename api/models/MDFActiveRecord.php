@@ -9,7 +9,7 @@
  * 
  */
 
- class MDFActiveRecord {
+ abstract class MDFActiveRecord {
     protected $data;
 
     public function __construct() {}
@@ -45,4 +45,6 @@
             $this->data[$property] = $value;
         }
     }
+
+    abstract public function save($dataToSave = null, $format);
  }

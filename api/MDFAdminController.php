@@ -30,10 +30,10 @@ class MDFAdminController extends WP_REST_Controller {
    }
 
    public function create($request) {
-      $params = (object)$request->get_params();
-      $field = new MDFFieldModel();
-      $field->setParams($params->fields[0]);
-      return rest_ensure_response($field->toArray());
+      $fieldModel = new MDFFieldModel();
+      $fieldModel->setParams($request->get_params());
+
+      return  rest_ensure_response($fieldModel->toArray());
    }
 
    public function load($request) {
@@ -86,17 +86,6 @@ class MDFAdminController extends WP_REST_Controller {
          'schema' => $this->responseSchema(),
       ]);
    }
-
-   //validations
-   // private function validateFieldByType($field) {
-   //    $valid = isset($field);
-
-   //    if(isset($field['type'])) {
-   //       // switch($field['type'])
-   //    }
-      
-   //    return $valid;
-   // }
 
    //schemas
    public function responseSchema() {
@@ -157,8 +146,8 @@ class MDFAdminController extends WP_REST_Controller {
             'description' => __('A list of fields that forms the formulary'),
             'type' => 'array',
             'required' => true,
-            'items' => MDFFieldModel::getFieldScheme(),
-         ]        
+            'items' => MDFFieldModel::getFieldArgs()
+         ]
       ];
    }
 

@@ -12,18 +12,17 @@
  require_once dirname(__FILE__) . '/MDFActiveRecord.php';
 
  class MDFFieldModel extends MDFActiveRecord {
+    public function __construct() {
+    }
     
-    // public static function validateField($fieldObject) {
-    //     $valid = isset($fieldObject);
-    //     if(!isset($fieldObject['type'])) return false;
+    public function createField() {
 
-    //     switch($fieldObject['type']) {
-    //         case 'email': $valid &= is_email()
-    //     }
+    }
 
-    //     return $valid;
-    // }
-    
+    public static function translateColumnNames() {
+        
+    }
+
     public static function getFieldTypes() {
         return [
             'text',
@@ -51,44 +50,44 @@
                   'context' => ['view', 'edit'],
                   'readonly' => true
                ],
-               'order' => [
+               'position' => [
                   'description' => 'the position of the field on the form',
                   'type' => 'integer',
                   'context' => ['view', 'edit'],
                   'readonly' => false
                ],
-               'name' => [
+               'field_name' => [
                   'description' => 'use this value on the html name attribute',
                   'type' => 'string',
                   'context' => ['view', 'edit'],
                   'readonly' => false
                ],
-               'type' => [
+               'field_type' => [
                   'description' => 'the html field type',
                   'type' => 'string',
                   'enum' => self::getFieldTypes(),
                   'context' => ['view', 'edit'],
                   'readonly' => false
                ],
-               'label' => [
+               'field_label' => [
                   'description' => 'the label of the field',
                   'type' => 'string',
                   'context' => ['view', 'edit'],
                   'readonly' => false
                ],
-               'tip' => [
+               'field_tip' => [
                   'description' => 'use this value as a placeholder of a html field',
                   'type' => 'string',
                   'context' => ['view', 'edit'],
                   'readonly' => false
                ],
-               'validations' => [
+               'field_validations' => [
                   'description' => 'a coma separated string to identify the field validations',
                   'type' => 'string',
                   'context' => ['view', 'edit'],
                   'readonly' => false
                ],
-               'options' => [
+               'field_options' => [
                   'description' => 'It stores the options of a dropdown, radio or checkbox groups',
                   'type' => 'string',
                   'context' => ['view', 'edit'],
@@ -102,37 +101,37 @@
         return [
             'type' => 'object',
             'properties' => [
-                'order' => [
+                'position' => [
                     'description' => 'the position of the field on the form',
                     'type' => 'integer',
                     'required' => true,
                 ],
-                'name' => [
+                'field_name' => [
                     'description' => 'use this value on the html name attribute',
                     'type' => 'string',
                     'required' => true,
                 ],
-                'label' => [
+                'field_label' => [
                     'description' => 'the label of the field',
                     'type' => 'string',
                     'required' => true,
                 ],
-                'tip' => [
+                'field_tip' => [
                     'description' => 'use this value as a placeholder of a html field',
                     'type' => 'string',
                     'required' => false
                 ],
-                'validations' => [
+                'field_validations' => [
                     'description' => 'a coma separated string to identify the field validations',
                     'type' => 'string',
                     'required' => false,
                 ],
-                'options' => [
+                'field_options' => [
                     'description' => 'It stores the options of a dropdown, radio or checkbox groups',
                     'type' => 'string',
                     'required' => false,
                 ],
-                'type' => [
+                'field_type' => [
                     'description' => 'the html field type',
                     'type' => 'string',
                     'enum' => self::getFieldTypes(),
