@@ -1,0 +1,15 @@
+{
+    "name": "godfather/megusta-dynamic-forms",
+    "authors": [
+        {
+            "name": "Santiago Carmo",
+            "email": "santiagocca@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MDFModels\\": "api/models"
+        }
+    }
+}
