@@ -58,7 +58,10 @@ class MDFAdminController extends WP_REST_Controller {
    }
 
    public function delete($request) {
-      return  rest_ensure_response('delete');
+      $requestParams = $request->get_params();
+      $formModel = new MDFFormModel();
+      $data = $formModel->find($requestParams['id']);
+      return  rest_ensure_response([ 'success' => $formModel->delete() ]);
    }
 
 
@@ -89,7 +92,7 @@ class MDFAdminController extends WP_REST_Controller {
          'schema' => $this->responseSchema(),
       ]);
 
-      register_rest_route(self::NAMESPACE, self::ENDPOINT, [[ 
+      register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
          'methods' => WP_REST_Server::DELETABLE, 
          'callback' => [$this, 'delete']],
          'schema' => $this->responseSchema(),

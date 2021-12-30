@@ -14,9 +14,9 @@ namespace MDFModels;
 use \Exception;
 
 abstract class MDFActiveRecord {
-    protected $data;
     protected $wpdb;
     protected $tableName;
+    protected $data = [];
 
     public function __construct() {
         global $wpdb;
@@ -32,7 +32,8 @@ abstract class MDFActiveRecord {
             return call_user_func([$this, "get_{$property}"]);
         }
 
-        return $this->data[$property];
+        if(isset($this->data[$property])) return $this->data[$property];
+        return null;
     }
 
     public function __set($property, $value) {
@@ -66,8 +67,18 @@ abstract class MDFActiveRecord {
         if(!empty($options)) $query .= $this->prepareOptions($options);
 
         $query  = $this->wpdb->prepare($query, $values);
-        return $this->wpdb->get_results($query);
-    }    
+        return $this->wpdb->get_results($query, ARRAY_A);
+    }
+
+    public function delete($id = null) {
+        if(!is_numeric($id)) throw new Exception("Invalid argument!");
+        $id = isset($id) ? $id : $this->id;
+        return $this->wpdb->delete($this->tableName, ['id' => $id], ['%d']);
+    }
+
+    public function deleteCollection($options = [], $format = []) {
+        return $this->wpdb->delete($this->tableName, $options, $format);
+    }
 
     abstract public function save($format = []);
     abstract public static function getSchema() : array;

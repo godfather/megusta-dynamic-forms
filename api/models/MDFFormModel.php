@@ -22,6 +22,15 @@ use MDFModels\MDFFieldModel;
         $this->tableName = "{$this->wpdb->prefix}megusta_dynamic_forms";
     }
     
+    public function get_fields($formId = NULL) {
+      $formId = $formId ? $formId : $this->id;
+      if($formId) {
+         $fields = new MDFFieldModel();
+         return $fields->findAll(['form_id' => '%d'], [$formId]);
+      }
+      return [];
+    }
+
     private function createField($fieldData, $formId) {
         $fieldData['form_id'] = $formId;
         $fieldModel = new MDFFieldModel();
@@ -53,11 +62,17 @@ use MDFModels\MDFFieldModel;
       return $form;
     }
     
-    public function get_fields() {
-      //  return "get_fields";
-      $fields = new MDFFieldModel();
+    public function delete($id = NULL) {
+      $id = isset($id) ? $id : $this->id;
+      $success = parent::delete($id);
 
-      return $fields->findAll(['form_id' => '%d'], [$this->id]);
+      //deleting associated fields
+      if($success) {
+         $field = new MDFFieldModel();
+         $success = $success && $field->deleteCollection(['form_id' => $id], ['%d']);
+      }
+
+      return $success;
     }
 
     public static function getSchema() : array {
