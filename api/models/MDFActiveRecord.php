@@ -9,15 +9,23 @@
  * 
  */
 
- abstract class MDFActiveRecord {
-    protected $data;
+namespace MDFModels;
 
-    public function __construct() {}
+use \Exception;
+
+abstract class MDFActiveRecord {
+    protected $data;
+    protected $wpdb;
+    protected $tableName;
+
+    public function __construct() {
+        global $wpdb;
+        $this->wpdb = $wpdb;
+    }
 
     public function toArray() {
         return $this->data;
     }
-
 
     public function __get($property) {
         if(method_exists($this, "get_{$property}")) {
@@ -31,12 +39,39 @@
         $this->setProperty($property, $value);
     }
 
-    public function setParams($params = []) {
-        if(isset($params['id'])) unset($params['id']); //avoid problems with mysql primary key;
+    public function setParams($params = [], $unsetId = true) {
+        if($unsetId && isset($params['id'])) unset($params['id']); //avoid problems with mysql primary key;
+        
         foreach($params as $property => $value) {
             $this->setProperty($property, $value);
         }
     }
+
+    public function find($id) {
+        if(!is_numeric($id)) throw new Exception("Invalid argument!");
+        
+        $query = $this->wpdb->prepare("SELECT * FROM {$this->tableName} WHERE id=%d LIMIT 1", $id);
+        $result = $this->wpdb->get_row($query);
+        
+        if($result) {
+            $this->setParams($result, false);
+            return $this;
+        }
+
+        return false;
+    }
+
+    public function findAll($options = [], $values = []) {
+        $query = "SELECT * FROM {$this->tableName}";        
+        if(!empty($options)) $query .= $this->prepareOptions($options);
+
+        $query  = $this->wpdb->prepare($query, $values);
+        return $this->wpdb->get_results($query);
+    }    
+
+    abstract public function save($format = []);
+    abstract public static function getSchema() : array;
+    abstract public static function getArgs() : array;
 
     private function setProperty($property, $value) {
         if(method_exists($this, "set_{$property}")) {
@@ -46,5 +81,13 @@
         }
     }
 
-    abstract public function save($dataToSave = null, $format);
+    private function prepareOptions($options = []) {
+        $query = '';
+        
+        foreach($options as $k => $value) {
+            $query .= "{$k}={$value}";
+        }
+
+        return " WHERE {$query}";
+    }
  }

@@ -9,18 +9,22 @@
  * 
  */
 
- require_once dirname(__FILE__) . '/MDFActiveRecord.php';
+namespace MDFModels;
+
+use MDFModels\MDFActiveRecord;
 
  class MDFFieldModel extends MDFActiveRecord {
     public function __construct() {
+        parent::__construct();
+        $this->tableName = "{$this->wpdb->prefix}megusta_dynamic_forms_fields";
     }
     
-    public function createField() {
-
-    }
-
     public static function translateColumnNames() {
         
+    }
+
+    public function save($format = []) {
+        return $this->wpdb->insert($this->tableName, $this->data, $format);
     }
 
     public static function getFieldTypes() {
@@ -40,7 +44,7 @@
      }
 
 
-    public static function getFieldScheme() {
+    public static function getSchema() : array {
         return [
             'type' => 'object',
             'properties' => [
@@ -97,7 +101,7 @@
         ];
     }
 
-    public static function getFieldArgs() {
+    public static function getArgs() : array {
         return [
             'type' => 'object',
             'properties' => [

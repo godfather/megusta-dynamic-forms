@@ -9,7 +9,12 @@
  * 
  */
 
-require_once dirname(__FILE__) . '/models/MDFFieldModel.php';
+require_once dirname(__FILE__) . '/../vendor/autoload.php';
+
+use MDFModels\MDFActiveRecord;
+use MDFModels\MDFFormModel;
+use MDFModels\MDFFieldModel;
+
 
 class MDFAdminController extends WP_REST_Controller {
 
@@ -30,18 +35,22 @@ class MDFAdminController extends WP_REST_Controller {
    }
 
    public function create($request) {
-      $fieldModel = new MDFFieldModel();
-      $fieldModel->setParams($request->get_params());
-
-      return  rest_ensure_response($fieldModel->toArray());
+      $formModel = new MDFFormModel();
+      $formModel->setParams($request->get_params());
+      return  rest_ensure_response(['success' => $formModel->save()]);
    }
 
    public function load($request) {
-      return  rest_ensure_response('load');
+      $requestParams = $request->get_params();
+      $formModel = new MDFFormModel();
+      $data = $formModel->find($requestParams['id']);
+      return  rest_ensure_response($data->toArray());
    }
 
    public function list($request) {
-      return  rest_ensure_response('list');
+      $formModel = new MDFFormModel();
+      $data = $formModel->findAll();
+      return  rest_ensure_response($data);
    }
 
    public function update($request) {
@@ -90,65 +99,12 @@ class MDFAdminController extends WP_REST_Controller {
    //schemas
    public function responseSchema() {
       if($this->schema) return $this->schema;
-
-      $this->schema = [
-         '$schema' => 'http://json-schema.org/draft-04/schema#',
-         'title' => 'form',
-         'type' => 'object',
-         'properties' => [
-            'id' => [
-               'description' => 'asdsa',
-               'type' => 'integer',
-               'context' => ['view', 'edit'],
-               'readonly' => true
-            ],
-            'name' => [
-               'description' => 'form name',
-               'type' => 'string',
-               'context' => ['view', 'edit'],
-               'readonly' => false
-            ],
-            'created_at' => [
-               'description' => 'the form\'s creation date',
-               'type' => 'string',
-               'context' => ['view', 'edit'],
-               'readonly' => true
-            ],
-            'updated_at' => [
-               'description' => 'the latest date when the form was updated',
-               'type' => 'string',
-               'context' => ['view', 'edit'],
-               'readonly' => true
-            ],
-            'fields' => [
-               'description' => 'a list of fields used to mount the form',
-               'type' => 'array',
-               'context' => ['view', 'edit'],
-               'items' => MDFFieldModel::getFieldScheme()
-            ]
-         ]
-      ];
-      
+      $this->schema = MDFFormModel::getSchema();
       return $this->schema;
    }
 
    public function createArgsScheme() {
-      return [
-         'name' => [
-            'description' => __('The name that identifies the form.'),
-            'type' => 'string',
-            'required' => true,
-            'format' => 'email'
-            // 'validate_callback' => [ $this,  'validateCreateArgs'],
-            // 'sanitize_callback' => [ $this,  'sanitizeCreateArgs'],
-         ],
-         'fields' => [
-            'description' => __('A list of fields that forms the formulary'),
-            'type' => 'array',
-            'required' => true,
-            'items' => MDFFieldModel::getFieldArgs()
-         ]
-      ];
+      return MDFFormModel::getArgs();
    }
 
  }
