@@ -48,7 +48,7 @@ use MDFModels\MDFFieldModel;
         $formId = $this->wpdb->insert_id;
 
         if(is_array($this->data['fields']) && !empty($this->data['fields'])) {
-            foreach($this->fields as $k => $field) {
+           foreach($this->data['fields'] as $k => $field) {
                $success = $success && $this->createField($field, $formId);
             }
         }
