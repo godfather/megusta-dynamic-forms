@@ -17,9 +17,11 @@ use MDFModels\MDFFieldModel;
 
 
  class MDFFormModel extends MDFActiveRecord {        
-    public function __construct() {
+    public function __construct($id = null) {
         parent::__construct();
         $this->tableName = "{$this->wpdb->prefix}megusta_dynamic_forms";
+
+        if(isset($id)) $this->find($id);
     }
     
     public function get_fields($formId = NULL) {
@@ -31,11 +33,11 @@ use MDFModels\MDFFieldModel;
       return [];
     }
 
-    private function createField($fieldData, $formId) {
+    protected function createOrUpdateField($fieldData, $formId) {
         $fieldData['form_id'] = $formId;
         $fieldModel = new MDFFieldModel();
-        $fieldModel->setParams($fieldData);
-        return $fieldModel->save();
+        $fieldModel->setParams($fieldData, false);
+        return (!isset($fieldData['id']) ? $fieldModel->save() : $fieldModel->update());
     }
 
     public function save( $format = []) {
@@ -49,11 +51,30 @@ use MDFModels\MDFFieldModel;
 
         if(is_array($this->data['fields']) && !empty($this->data['fields'])) {
            foreach($this->data['fields'] as $k => $field) {
-               $success = $success && $this->createField($field, $formId);
+               $savedField = $this->createOrUpdateField($field, $formId);
+               $success = $success && !(false === $savedField);
             }
         }
 
         return $success;
+    }
+
+    public function update($format = []) {
+      if(empty($this->data['form_name']) || empty($this->data['id'])) throw new Exception('Form name and id cannot be empty!');
+      
+      $success = true;      
+      $data = ['form_name' => $this->form_name];
+      $updated = $this->wpdb->update($this->tableName, $data, ['id' => $this->id], ['%s'], ['%d']);
+      $success = $success && !(false === $updated);
+
+      if(is_array($this->data['fields']) && !empty($this->data['fields'])) {
+         foreach($this->data['fields'] as $k => $field) {
+            $fieldUpdated = $this->createOrUpdateField($field, $this->id);
+            $success = $success && !(false === $fieldUpdated);
+         }
+      }
+
+      return $success;
     }
 
     public function find($id) {

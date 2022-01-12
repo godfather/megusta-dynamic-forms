@@ -54,7 +54,13 @@ class MDFAdminController extends WP_REST_Controller {
    }
 
    public function update($request) {
-      return  rest_ensure_response('update');
+      $requestParams = $request->get_params();
+
+      $form = new MDFFormModel($requestParams['id']);
+      $form->setParams($requestParams);
+
+      return  rest_ensure_response(['success' => $form->update()]);
+      // return  rest_ensure_response($form->toArray());
    }
 
    public function delete($request) {
@@ -86,7 +92,7 @@ class MDFAdminController extends WP_REST_Controller {
          'schema' => $this->responseSchema(),
       ]);
 
-      register_rest_route(self::NAMESPACE, self::ENDPOINT, [[ 
+      register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
          'methods' => WP_REST_Server::EDITABLE, 
          'callback' => [$this, 'update']],
          'schema' => $this->responseSchema(),

@@ -24,7 +24,16 @@ use MDFModels\MDFActiveRecord;
     }
 
     public function save($format = []) {
+        unset($this->data['isNewrecord']);
         return $this->wpdb->insert($this->tableName, $this->data, $format);
+    }
+
+    public function update($format = []) {
+        unset($this->data['isNewrecord']);
+        return $this->wpdb->update($this->tableName, $this->data, [
+            'id' => $this->id, 
+            'form_id' => $this->form_id
+        ], $format, ['%d', '%d']);
     }
 
     public static function getFieldTypes() {

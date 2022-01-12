@@ -17,10 +17,12 @@ abstract class MDFActiveRecord {
     protected $wpdb;
     protected $tableName;
     protected $data = [];
+    protected $isNewRecord;
 
     public function __construct() {
         global $wpdb;
         $this->wpdb = $wpdb;
+        $this->setAsNewRecord();
     }
 
     public function toArray() {
@@ -40,6 +42,14 @@ abstract class MDFActiveRecord {
         $this->setProperty($property, $value);
     }
 
+    public function setAsNewRecord($isNew = true) {
+        $this->isNewrecord = $isNew;
+    }
+
+    public function isNewRecord($isNew = true) {
+        return $this->isNewrecord;
+    }
+
     public function setParams($params = [], $unsetId = true) {
         if($unsetId && isset($params['id'])) unset($params['id']); //avoid problems with mysql primary key;
         
@@ -55,6 +65,7 @@ abstract class MDFActiveRecord {
         $result = $this->wpdb->get_row($query);
         
         if($result) {
+            $this->setAsNewRecord(false);
             $this->setParams($result, false);
             return $this;
         }
@@ -81,6 +92,7 @@ abstract class MDFActiveRecord {
     }
 
     abstract public function save($format = []);
+    abstract public function update($format = []);
     abstract public static function getSchema() : array;
     abstract public static function getArgs() : array;
 
