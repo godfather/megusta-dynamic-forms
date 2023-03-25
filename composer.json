@@ -9,7 +9,9 @@
     "require": {},
     "autoload": {
         "psr-4": {
-            "MDFModels\\": "api/models"
+            "MDF\\Data\\":"data",
+            "MDF\\Libs\\":"libs",
+            "MDF\\Data\\Models\\":"data/models"
         }
     }
 }
