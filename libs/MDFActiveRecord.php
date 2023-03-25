@@ -9,7 +9,7 @@
  * 
  */
 
-namespace MDFModels;
+namespace MDF\Libs;
 
 use \Exception;
 
@@ -18,10 +18,12 @@ abstract class MDFActiveRecord {
     protected $tableName;
     protected $data = [];
     protected $isNewRecord;
+    protected static $modelName;
 
     public function __construct() {
         global $wpdb;
         $this->wpdb = $wpdb;
+        self::$modelName = get_called_class();
         $this->setAsNewRecord();
     }
 
@@ -58,15 +60,15 @@ abstract class MDFActiveRecord {
         }
     }
 
-    public function find($id) {
+    public function find($id) {        
         if(!is_numeric($id)) throw new Exception("Invalid argument!");
         
         $query = $this->wpdb->prepare("SELECT * FROM {$this->tableName} WHERE id=%d LIMIT 1", $id);
-        $result = $this->wpdb->get_row($query);
-        
+        $result = $this->wpdb->get_results($query, ARRAY_A);
+
         if($result) {
             $this->setAsNewRecord(false);
-            $this->setParams($result, false);
+            $this->setParams($result[0], false);
             return $this;
         }
 
@@ -75,10 +77,33 @@ abstract class MDFActiveRecord {
 
     public function findAll($options = [], $values = []) {
         $query = "SELECT * FROM {$this->tableName}";        
-        if(!empty($options)) $query .= $this->prepareOptions($options);
+        if(!empty($options)) $query .= self::prepareOptions($options);
 
         $query  = $this->wpdb->prepare($query, $values);
-        return $this->wpdb->get_results($query, ARRAY_A);
+        $results = $this->wpdb->get_results($query, ARRAY_A);
+
+        $resultsAsObject = [];
+        foreach($results as $k => $result) {
+            $resultsAsObject[] = $this->convertToInstance($result);
+        }
+
+        return $resultsAsObject;
+    }
+
+    public function findAllByQuery($query, $asArray = false) {
+        if(empty($query)) throw new Exception("Invalid argument!");
+
+        $query = "SELECT * FROM {$this->tableName} WHERE $query";
+        $results = $this->wpdb->get_results($query, ARRAY_A);
+
+        if($asArray) return $results;
+
+        $resultsAsObject = [];
+        foreach($results as $k => $result) {
+            $resultsAsObject[] = $this->convertToInstance($result);
+        }
+
+        return $resultsAsObject;
     }
 
     public function delete($id = null) {
@@ -89,6 +114,16 @@ abstract class MDFActiveRecord {
 
     public function deleteCollection($options = [], $format = []) {
         return $this->wpdb->delete($this->tableName, $options, $format);
+    }
+
+    public function count($options = [], $values = []) {
+        $query = "SELECT COUNT(*) FROM {$this->tableName}";        
+        if(!empty($options)) {
+            $query .= self::prepareOptions($options);
+            return $this->wpdb->get_var($query, $values);
+        }
+        
+        return $this->wpdb->get_var($query);
     }
 
     abstract public function save($format = []);
@@ -104,13 +139,20 @@ abstract class MDFActiveRecord {
         }
     }
 
-    private function prepareOptions($options = []) {
-        $query = '';
+    private static function prepareOptions($options = []) {
+        $query = [];
         
         foreach($options as $k => $value) {
-            $query .= "{$k}={$value}";
+            $query[] = "{$k}={$value}";
         }
 
-        return " WHERE {$query}";
+        return " WHERE " . implode(' AND ', $query);
+    }
+
+    private function convertToInstance($params) {
+        $model = new self::$modelName();
+        $model->setAsNewRecord(false);
+        $model->setParams($params, false);
+        return $model;
     }
  }
