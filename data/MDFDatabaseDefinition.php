@@ -13,13 +13,9 @@
 
 namespace MDF\Data;
 
+require_once ABSPATH . 'wp-admin/install-helper.php';
 
- // If this file is called directly, abort.
- defined('ABSPATH') || exit;
- 
- require_once ABSPATH . 'wp-admin/install-helper.php';
-
- class MDFDatabaseDefinition {
+class MDFDatabaseDefinition {
     public static function getTableName($name) {
         global $wpdb;
         return "{$wpdb->prefix}mdf_{$name}";

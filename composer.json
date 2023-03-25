@@ -10,8 +10,8 @@
     "autoload": {
         "psr-4": {
             "MDF\\Data\\":"data",
-            "MDF\\Libs\\":"libs",
-            "MDF\\Data\\Models\\":"data/models"
+            "MDF\\Data\\Models\\":"data/models",
+            "MDF\\Libs\\":"libs"
         }
     }
 }
