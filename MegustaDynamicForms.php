@@ -12,15 +12,22 @@
 namespace MDF;
 
 use MDF\Data\MDFDatabaseDefinition;
+use MDF\Libs\MDFApi;
 
-// if (!defined('MDF_PLUGIN_FILE')) define('MDF_PLUGIN_FILE', __FILE__ );
+require_once 'vendor/autoload.php';
+require_once ABSPATH . 'wp-admin/install-helper.php';
+
 
 class MegustaDynamicForms {
     const MDF_PLUGIN_VERSION = '1.0.0';
     const DB_OPTION_PLUGIN_VERSION = 'megusta-dynamic-forms-plugin-version';
 
     public static function init() {
+        $api = new MDFApi();
+
         register_activation_hook(MDF_PLUGIN_FILE , [static::class, 'onActiveHandler']);
+
+
     }
 
     public static function onActiveHandler() {

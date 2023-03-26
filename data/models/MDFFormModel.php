@@ -4,16 +4,16 @@
  *  
  * @since  1.0.0
  * @package MegustaDynamicForms
- * @subpackage MegustaDynamicForms/api/models
+ * @subpackage MDF/Data/Models
  * @author Santiago Carmo <santiagocca@gmail.com>
  * 
  */
 
-namespace MDFModels;
+namespace MDF\Data\Models;
 
 use \Exception;
-use MDFModels\MDFActiveRecord;
-use MDFModels\MDFFieldModel;
+use MDF\Libs\MDFActiveRecord;
+use MDF\Data\Models\MDFFieldModel;
 
 
  class MDFFormModel extends MDFActiveRecord {        
@@ -142,14 +142,13 @@ use MDFModels\MDFFieldModel;
                'description' => __('The name that identifies the form.'),
                'type' => 'string',
                'required' => true,
-               'format' => 'string'
-               // 'validate_callback' => [ $this,  'validateCreateArgs'],
-               // 'sanitize_callback' => [ $this,  'sanitizeCreateArgs'],
+               'format' => 'string',
+               'sanitize_callback' => 'sanitize_text_field',
             ],
             'fields' => [
-               'description' => __('A list of fields that forms the formulary'),
-               'type' => 'array',
+               'description' => __('The list o form fields'),
                'required' => true,
+               'type' => 'array',
                'items' => MDFFieldModel::getArgs()
             ]
          ];
