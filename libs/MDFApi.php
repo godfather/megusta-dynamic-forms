@@ -92,6 +92,14 @@
         return  rest_ensure_response(['success' => $form->update()]);
      }
 
+
+     public function delete($request = []) {
+        $requestParams = $request->get_params();
+        $formModel = new MDFFormModel();
+        $data = $formModel->find($requestParams['id']);
+        return  rest_ensure_response([ 'success' => $formModel->delete() ]);  
+     }
+
      public function deleteField($request) {
         $success = false;
         $fieldModel = new MDFFieldModel();
@@ -109,7 +117,6 @@
     private function getPermission() {
         return current_user_can( 'edit_posts' ) ? '__return_true' : '__return_false';
     }
-
 
     public function get_item_schema() {
         if($this->_schema) return $this->_schema;
