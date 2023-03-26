@@ -14,12 +14,13 @@ namespace MDF\Data\Models;
 use \Exception;
 use MDF\Libs\MDFActiveRecord;
 use MDF\Data\Models\MDFFieldModel;
+use MDF\Data\MDFDatabaseDefinition;
 
 
  class MDFFormModel extends MDFActiveRecord {        
     public function __construct($id = null) {
         parent::__construct();
-        $this->tableName = "{$this->wpdb->prefix}megusta_dynamic_forms";
+        $this->tableName = MDFDatabaseDefinition::getTableName('forms');
 
         if(isset($id)) $this->find($id);
     }
@@ -63,7 +64,7 @@ use MDF\Data\Models\MDFFieldModel;
       if(empty($this->data['form_name']) || empty($this->data['id'])) throw new Exception('Form name and id cannot be empty!');
       
       $success = true;      
-      $data = ['form_name' => $this->form_name];
+      $data = ['form_name' => $this->form_name, 'updated_at' => date('Y-m-d H:i:s')];
       $updated = $this->wpdb->update($this->tableName, $data, ['id' => $this->id], ['%s'], ['%d']);
       $success = $success && !(false === $updated);
 

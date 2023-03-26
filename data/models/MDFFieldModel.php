@@ -13,11 +13,12 @@ namespace MDF\Data\Models;
 
 use \Exception;
 use MDF\Libs\MDFActiveRecord;
+use MDF\Data\MDFDatabaseDefinition;
 
  class MDFFieldModel extends MDFActiveRecord {
     public function __construct() {
         parent::__construct();
-        $this->tableName = "{$this->wpdb->prefix}megusta_dynamic_forms_fields";
+        $this->tableName = MDFDatabaseDefinition::getTableName('form_fields');
     }
     
     public function save($format = []) {
@@ -27,11 +28,19 @@ use MDF\Libs\MDFActiveRecord;
 
     public function update($format = []) {
         unset($this->data['isNewrecord']);
+        $this->data['updated_at'] = date('Y-m-d H:I:s');
         return $this->wpdb->update($this->tableName, $this->data, [
             'id' => $this->id, 
             'form_id' => $this->form_id
         ], $format, ['%d', '%d']);
     }
+
+    public function delete($id = NULL) {
+        $id = isset($id) ? $id : $this->id;
+        $success = parent::delete($id);  
+        return $success;
+    }
+  
 
     public static function getFieldTypes() {
         return [
