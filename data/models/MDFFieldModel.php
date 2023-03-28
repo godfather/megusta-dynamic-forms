@@ -40,7 +40,6 @@ use MDF\Data\MDFDatabaseDefinition;
         $success = parent::delete($id);  
         return $success;
     }
-  
 
     public static function getFieldTypes() {
         return [

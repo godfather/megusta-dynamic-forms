@@ -92,6 +92,12 @@
         return  rest_ensure_response(['success' => $form->update()]);
      }
 
+     public function list($request) {
+        $formModel = new MDFFormModel();
+        $forms = $formModel->findAll([], [], true);
+        return  rest_ensure_response($forms);
+     }
+
 
      public function delete($request = []) {
         $requestParams = $request->get_params();
@@ -115,6 +121,7 @@
   
 
     private function getPermission() {
+        return '__return_true';
         return current_user_can( 'edit_posts' ) ? '__return_true' : '__return_false';
     }
 

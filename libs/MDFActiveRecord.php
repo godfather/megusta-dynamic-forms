@@ -75,13 +75,15 @@ abstract class MDFActiveRecord {
         return false;
     }
 
-    public function findAll($options = [], $values = []) {
+    public function findAll($options = [], $values = [], $asArray = false) {
         $query = "SELECT * FROM {$this->tableName}";        
         if(!empty($options)) $query .= self::prepareOptions($options);
 
         $query  = $this->wpdb->prepare($query, $values);
         $results = $this->wpdb->get_results($query, ARRAY_A);
 
+        if($asArray) return $results;
+        
         $resultsAsObject = [];
         foreach($results as $k => $result) {
             $resultsAsObject[] = $this->convertToInstance($result);
