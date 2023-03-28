@@ -98,6 +98,14 @@
         return  rest_ensure_response($forms);
      }
 
+     public function load($request = []) {
+        $requestParams = $request->get_params();
+        $formModel = new MDFFormModel();
+        $form = $formModel->load($requestParams['id'], true);
+
+        return rest_ensure_response($form->toArray());
+     }
+
 
      public function delete($request = []) {
         $requestParams = $request->get_params();

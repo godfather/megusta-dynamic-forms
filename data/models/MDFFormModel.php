@@ -25,11 +25,11 @@ use MDF\Data\MDFDatabaseDefinition;
         if(isset($id)) $this->find($id);
     }
     
-    public function get_fields($formId = NULL) {
+    public function get_fields($formId = NULL, $asArray = false) {
       $formId = $formId ? $formId : $this->id;
       if($formId) {
          $fields = new MDFFieldModel();
-         return $fields->findAll(['form_id' => '%d'], [$formId]);
+         return $fields->findAll(['form_id' => '%d'], [$formId], $asArray);
       }
       return [];
     }
@@ -78,9 +78,9 @@ use MDF\Data\MDFDatabaseDefinition;
       return $success;
     }
 
-    public function find($id) {
+    public function load($id, $asArray) {
       $form = parent::find($id);
-      $form->fields = $this->get_fields();
+      $form->fields = $this->get_fields($id, $asArray);
       return $form;
     }
     
