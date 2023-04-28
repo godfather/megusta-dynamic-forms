@@ -24,16 +24,37 @@ class MegustaDynamicForms {
 
     public static function init() {
         $api = new MDFApi();
-
         register_activation_hook(MDF_PLUGIN_FILE , [static::class, 'onActiveHandler']);
-
-
+        add_action('admin_menu', [static::class, 'enqueueScripts']);
+        add_action('admin_menu', [static::class, 'createAdminMenus']);
     }
 
     public static function onActiveHandler() {
         MDFDatabaseDefinition::run();
     }
 
+    public static function createAdminMenus() {
+        add_menu_page(__('Megusta Dynamic Forms'), __('Megusta Dynamic Forms'),'manage_options', "mdf-list", [static::class, 'megustaRootHtml'], 'dashicons-text', 30);
+        // add_submenu_page('mdf-list',__('Megusta Dynamic Forms'), __('All entries'), 'manage_options', 'mdf-list', ['MegustaDynamicForms', 'megustaRootHtml']);
+        // add_submenu_page('mdf-list',__('Add new entry'), __('Add new entry'), 'manage_options', 'mdf-create', ['MegustaDynamicForms', 'megustaRootHtml']);
+    }
+
+    public static function megustaRootHtml() {
+        echo '<section id="mdf-root"></div>';
+    }
+
+    public static function enqueueScripts() {
+        if(in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', '::1'))) {
+            $jsLoadScript = 'http://localhost:3000/static/js/bundle.js';
+            $cssLoadStyles = 'http://localhost:3000/static/css/bundle.css';
+        } else {
+            $jsLoadScript = plugin_dir_url( __FILE__ ) . 'ghost-inspector.js'; //update this path
+            $cssLoadStyles = plugin_dir_url( __FILE__ ) . 'ghost-inspector.css'; //update this path
+        }
+
+        wp_enqueue_style('megusta_dynamic_forms_css', $cssLoadStyles);
+        wp_enqueue_script('megusta_dynamic_forms_js', $jsLoadScript, '', mt_rand(10,1000), true);
+    }
 
 
     // public static function init() {
@@ -55,16 +76,5 @@ class MegustaDynamicForms {
 
     // public static function deactivateMegustaDynamicForms() {
 
-    // }
-
-    // public static function createAdminMenus() {
-    //     add_menu_page(__('Megusta Dynamic Forms'), __('Megusta Dynamic Forms'),'manage_options', "mdf-list", ['MegustaDynamicForms', 'megustaRootHtml'], 'dashicons-text', 30);
-    //     add_submenu_page('mdf-list',__('Megusta Dynamic Forms'), __('All entries'), 'manage_options', 'mdf-list', ['MegustaDynamicForms', 'megustaRootHtml']);
-    //     add_submenu_page('mdf-list',__('Add new entry'), __('Add new entry'), 'manage_options', 'mdf-create', ['MegustaDynamicForms', 'megustaRootHtml']);
-    // }
-
-    // public static function megustaRootHtml() {
-    //     require_once dirname(__FILE__) . '/data/MDFCreateDatabaseStructure.php';
-    //     echo '<pre>'. MEGUSTA_DYNAMIC_FORMS_TABLE;
     // }
 }
