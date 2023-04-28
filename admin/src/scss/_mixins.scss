@@ -1,0 +1,70 @@
+@mixin clearfix {
+    &::after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+ }
+
+ @mixin response($breakpoint) {
+    @if $breakpoint == 'phone' {
+        @media (max-width: 37.5em) { @content }; //600px
+    }
+  
+    @if $breakpoint == 'tablet' {
+        @media ( max-width: 56.25em) { @content }; //900px
+    }
+    
+    @if $breakpoint == 'tablet-landscape' {
+        @media ( max-width: 75em) { @content }; //1200px
+    }
+  
+    @if $breakpoint == 'big-desktop' {
+        @media ( min-width: 112.5em) { @content }; //1800px
+    }
+}
+
+@mixin center {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin centerVertical {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@mixin patterElement($x, $y, $width, $height, $direction, $position) {
+    position: absolute;
+    
+    @if $position == 'top' {
+        top: $y;
+    }
+
+    @if $position == 'bottom' {
+        bottom: $y;
+    }
+
+    @if $direction == 'left' {
+        left: $x;
+    }
+
+    @if $direction == 'right' {
+        right: $x;
+    }
+
+    width: $width;
+    height: $height;
+    z-index: 20;
+    background: transparent url('../images/trama2.png') repeat top right;
+}
+
+@mixin button {
+    font-size: 2rem;
+    color: $text-primary-color-light;
+    background-color: $title-blue;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: .7rem;
+    padding: 3rem 6rem;
+}

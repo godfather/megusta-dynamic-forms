@@ -1,0 +1,23 @@
+@import '../../scss/variables';
+
+.form {
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        background-color: transparent;
+        border: 2px dashed $color-disabled;
+        border-radius: $border-radius;
+        transition: border 100ms;
+        outline: none;
+        line-height: 2.6em;
+        font-size: 1.6em;
+
+        &:focus {
+            outline: none;
+            outline-style: none;
+            box-shadow: none;    
+            border-color: $color-disabled;
+            background-color: $bg-primary-color; 
+        }
+    }
+}
