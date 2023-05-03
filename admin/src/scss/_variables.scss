@@ -1,10 +1,15 @@
 $color-highlighted: #5513d4;
 $color-primary: #001151 ;
+$color-primary-light: #fff ;
 $color-disabled: #C9D4E4;
 
 $bg-primary-color: #fff;
-$color-border-light: #E8E7FE;
 
+$bg-button: #F6F7FE;
+$bg-button-active: $color-highlighted;
+
+$color-border-light: #E8E7FE;
+$color-border-active: #5B39FF;
 
 //sizes
 $border-radius: 8px;
