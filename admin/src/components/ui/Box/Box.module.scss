@@ -1,5 +1,8 @@
 @import '../../../scss/variables';
 
 .box {
+    box-sizing: border-box;
+    border-radius: $border-radius;
     background-color: $bg-primary-color;
+    padding: $default-padding;
 }
