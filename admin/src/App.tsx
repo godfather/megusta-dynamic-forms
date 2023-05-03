@@ -12,6 +12,7 @@ function App() {
           <Box className={css['app__stage']} title="Add Title">asdasd</Box>
           <Box className={css['app__controllers']} title='Fields'>
             <Button>Text Field</Button>
+            <Button>Textarea</Button>
           </Box>
         </div>
     </div>

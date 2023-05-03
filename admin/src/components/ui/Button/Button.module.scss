@@ -3,13 +3,14 @@
 .button {
     font-size: 1.2em;
     font-weight: 600;
-    width: 48%;
+    max-width: 48%;
     padding: 2em;
     text-align: center;
     background-color: $bg-button;
     border: 1px solid $color-border-light;
     border-radius: $border-radius;
     transition: all .2s;
+    flex-grow: 1;
 
     &:hover {
         color: $color-primary-light;
