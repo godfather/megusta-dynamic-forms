@@ -1,8 +1,26 @@
 @import '../../../scss/variables';
 
 .box {
+    position: relative;
     box-sizing: border-box;
     border-radius: $border-radius;
     background-color: $bg-primary-color;
-    padding: $default-padding;
+    
+    &__container {
+        box-sizing: border-box;
+        padding: $default-padding;
+    }
+
+    &__title {
+        display: block;
+        width: 100%;
+        margin: 2px 0 0;
+        padding: 0 30px;
+        box-sizing: border-box;
+        text-transform: uppercase;
+        font-size: 1.4em;
+        line-height: 2.8em;
+        color: $color-primary;        
+        border-bottom: 1px solid $color-border-light;
+    }
 }

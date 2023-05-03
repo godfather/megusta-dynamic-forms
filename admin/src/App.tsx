@@ -8,8 +8,8 @@ function App() {
     <div className={css.app}>
         <Form />
         <div className={css['app__container']}>
-          <Box className={css['app__stage']}>asdasd</Box>
-          <Box className={css['app__controllers']}>asdasd</Box>
+          <Box className={css['app__stage']} title="Add Title">asdasd</Box>
+          <Box className={css['app__controllers']} title='Fields'>asdasd</Box>
         </div>
     </div>
   );
