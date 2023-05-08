@@ -1,11 +1,27 @@
-import React from "react"
-import { Props } from "../../../models/Props.types"
+import React, { ReactNode } from "react"
 
 import css from './Button.module.scss';
 
-const Button: React.FC<Props> = (props) => {
+export enum ButtonType {
+    DEFAULT = 'default', 
+    HIGHLIGHTED = 'highlighted',
+    BIG_DEFAULT = 'big-default',
+    BIG_HIGHLIGHTED = 'big-highlighted'
+}
+
+
+const Button: React.FC<{children?:ReactNode, type?:ButtonType, clickHandler:() => void}> = (props) => {
+    const onClickHandler = (event: React.FormEvent) => {
+        event.preventDefault();
+        props.clickHandler();
+    }
+
+    const cssClasses = props.type ? 
+        `${css.button} ${css['button--' + props.type]}` : 
+        `${css.button} ${css['button--default']}`;
+
     return(
-        <button className={css.button}>{props.children}</button>
+        <button className={cssClasses} onClick={onClickHandler}>{props.children}</button>
     )
 }
 

@@ -4,7 +4,7 @@
     font-size: 1.2em;
     font-weight: 600;
     max-width: 48%;
-    padding: 2em;
+    padding: 1em 2em;
     text-align: center;
     background-color: $bg-button;
     border: 1px solid $color-border-light;
@@ -13,9 +13,30 @@
     flex-grow: 1;
     cursor: pointer;
 
-    &:hover {
+    &--big-default, 
+    &--big-highlighted {
+        padding: 2em;
+    }
+
+    &--default, 
+    &--big-default {
+        &:hover {
+            color: $color-primary-light;
+            background-color: $color-highlighted;
+            border-color: $color-border-active;
+        }    
+    }
+
+    &--big-highlighted,
+    &--highlighted {
         color: $color-primary-light;
         background-color: $color-highlighted;
         border-color: $color-border-active;
+
+        &:hover {
+            color: $color-primary;
+            background-color: $bg-button;
+            border-color: $color-border-light;    
+        }
     }
 }
