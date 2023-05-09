@@ -1,28 +1,34 @@
 import React, { ReactNode } from "react"
 
 import css from './Button.module.scss';
+import { FieldTypesEnum } from "../../../models/Field";
 
-export enum ButtonType {
+export enum ButtonStyle {
     DEFAULT = 'default', 
     HIGHLIGHTED = 'highlighted',
     BIG_DEFAULT = 'big-default',
-    BIG_HIGHLIGHTED = 'big-highlighted'
+    BIG_HIGHLIGHTED = 'big-highlighted',
 }
 
 
-const Button: React.FC<{children?:ReactNode, type?:ButtonType, clickHandler:() => void}> = (props) => {
-    const onClickHandler = (event: React.FormEvent) => {
-        event.preventDefault();
-        props.clickHandler();
-    }
+const Button: React.FC<{
+    children?:ReactNode, 
+    type:FieldTypesEnum,
+    style?:ButtonStyle, 
+    clickHandler:() => void }> = (props) => {
+    
+        const onClickHandler = (event: React.FormEvent) => {
+            // event.preventDefault();
+            props.clickHandler();
+        } 
 
-    const cssClasses = props.type ? 
-        `${css.button} ${css['button--' + props.type]}` : 
-        `${css.button} ${css['button--default']}`;
+        const cssClasses = props.style ? 
+            `${css.button} ${css['button--' + props.style]}` : 
+            `${css.button} ${css['button--default']}`;
 
-    return(
-        <button className={cssClasses} onClick={onClickHandler}>{props.children}</button>
-    )
+        return(
+            <button className={cssClasses} onClick={onClickHandler}>{props.children}</button>
+        )
 }
 
 export default Button;
