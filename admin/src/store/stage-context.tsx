@@ -23,6 +23,10 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
         return state.concat(new Field(newField.type, newField.label, newField.htmlType));
     }
 
+    if(action.type === ActionEnum.REMOVE) {
+        return state.filter(item => item.id !== action.value);
+    }
+
     return [];
 }
 
@@ -41,7 +45,9 @@ const StageContextProvider: React.FC<PropsWithChildren> = (props) => {
         dispatchFieldsList({ type: ActionEnum.ADD, value: fieldType });
     }
 
-    const removeFieldHandler = (field:string) => {}
+    const removeFieldHandler = (fieldId:string) => {
+        dispatchFieldsList({ type: ActionEnum.REMOVE, value: fieldId });
+    }
 
     const contextValues: StageContextType = {
         formTitle:null,
