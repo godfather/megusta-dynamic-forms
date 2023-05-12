@@ -2,23 +2,24 @@ import { useContext } from "react";
 import { StageContext } from "../../store/stage-context";
 import Field, { FieldTypesEnum } from "../../models/Field";
 import Button, { ButtonStyle } from "../ui/Button/Button";
+import { FieldBaseType } from "../../models/Field";
 
 const DUMMY_FIELD_TYPES_LIST = [
-    new Field(FieldTypesEnum.TEXT_FIELD, 'Text Field', 'text'),
-    new Field(FieldTypesEnum.TEXTAREA, 'Textarea', 'textarea'),
+    {type: FieldTypesEnum.TEXT_FIELD, label: 'Text Field', htmlType: 'text'},
+    {type: FieldTypesEnum.TEXTAREA, label: 'Textarea', htmlType: 'textarea'},
 ];
 
 const ControllersList = () => {
     const stageContext = useContext(StageContext);
 
-    const clickHandler = (fieldType:string) => {
-        stageContext.addField(fieldType);
+    const clickHandler = (field:FieldBaseType) => {
+        stageContext.addField(field);
     }
     
     const buttonFields = DUMMY_FIELD_TYPES_LIST.map(item => 
         <Button
           key={item.type}
-          clickHandler={clickHandler.bind(null, item.type)}
+          clickHandler={clickHandler.bind(null, item)}
           type={item.type}
           style={ButtonStyle.BIG_DEFAULT}>
           {item.label}

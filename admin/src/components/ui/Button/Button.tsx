@@ -17,8 +17,7 @@ const Button: React.FC<{
     style?:ButtonStyle, 
     clickHandler:() => void }> = (props) => {
     
-        const onClickHandler = (event: React.FormEvent) => {
-            // event.preventDefault();
+        const onClickHandler = () => {
             props.clickHandler();
         } 
 
