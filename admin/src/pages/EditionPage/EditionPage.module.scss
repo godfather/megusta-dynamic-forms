@@ -1,0 +1,25 @@
+@import '../../scss/variables';
+@import '../../scss/mixins';
+
+.edition-page {
+    position: relative;
+
+    &__container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: $default-padding;
+    }
+
+    &__stage {
+        min-width: calc(((100% - 2 * 10px) / 3) * 2);
+    }
+
+    &__controllers {
+        min-width: calc(((100% - 2 * 10px) / 3));
+        div {
+            display: flex;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+    }
+}
