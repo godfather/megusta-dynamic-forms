@@ -22,4 +22,19 @@
             flex-grow: 1;
         }
     }
+
+    &__field {
+        padding: .5em 0;
+        font-size: 1.6em;        
+
+        &--hover {
+            border: 3px dashed $color-disabled;
+        }
+    }
+
+    &__field--on-start-drag {
+        color: red;
+        opacity: .4;
+        transition: all .3s;
+    }
 }
