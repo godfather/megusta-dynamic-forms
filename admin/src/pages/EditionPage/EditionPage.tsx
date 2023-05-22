@@ -27,22 +27,15 @@ const EditionPage = () => {
     //     // setIsDraggin(true);
     // }
 
-    const dragStartHandle = (fieldId: string, currentPosition: number) => {
+    const dragStartHandle = (event: DragEvent<HTMLDivElement>, fieldId: string, currentPosition: number) => {
         setCurrentDragItemId(fieldId);
-        setDragItem(currentPosition);        
+        setDragItem(currentPosition);
+        event.currentTarget.classList.add(css['edition-page__field--on-start-drag']);
     }
 
-    const dragEndHandle = (event:DragEvent<HTMLElement>) => {
-        console.log(currentDragItemId);
-        console.log(dragItem);
-        console.log(dragOverItem);
+    const dragEndHandle = (event:DragEvent<HTMLDivElement>) => {
         stageContext.sortFields(currentDragItemId!, dragItem!, dragOverItem!);
-        // setCurrentDragItemId(null);
-        // setDragItem(null);
-        // setDragOverItem(null);
-        // const element = event.target as HTMLDivElement;
-        // element.classList.remove(css['edition-page__field--on-start-drag'], css['edition-page__field--hover']);
-        // setIsDraggin(false);
+        event.currentTarget.classList.remove(css['edition-page__field--on-start-drag'], css['edition-page__field--hover']);
     }
 
     // const dragOverHandle = (event:DragEvent<HTMLElement>) => {
@@ -64,15 +57,14 @@ const EditionPage = () => {
     //     return false;
     // }
 
-    // const dragEnterHandle = (event:DragEvent<HTMLElement>) => {
-    //     const element = event.target as HTMLDivElement;
-    //     element.classList.add(css['edition-page__field--hover']);
-    // }
+    const dragEnterHandle = (event:DragEvent<HTMLDivElement>, position:number) => {
+        setDragOverItem(position)
+        event.currentTarget.classList.add(css['edition-page__field--hover']);
+    }
 
-    // const dragLeaveHandle = (event:DragEvent<HTMLElement>) => {
-    //     const element = event.target as HTMLDivElement;
-    //     element.classList.remove(css['edition-page__field--hover']);
-    // }
+    const dragLeaveHandle = (event:DragEvent<HTMLDivElement>) => {
+        event.currentTarget.classList.remove(css['edition-page__field--hover']);
+    }
 
     const fields = stageContext.fields.map((item, i) => 
         <div
@@ -80,9 +72,10 @@ const EditionPage = () => {
             className={css['edition-page__field']}
             onClick={stageContext.removeField.bind(null, item.id)}
             draggable="true"
-            onDragStart={_ => dragStartHandle(item.id, i)}
-            onDragOver={e => e.preventDefault()}
-            onDragEnter={_ => setDragOverItem(i)}
+            onDragStart={event => dragStartHandle(event, item.id, i)}
+            onDragOver={event => event.preventDefault()}
+            onDragEnter={event => dragEnterHandle(event, i)}
+            onDragLeave={dragLeaveHandle}
             onDragEnd={dragEndHandle}>
                 { item.label }
         </div>
