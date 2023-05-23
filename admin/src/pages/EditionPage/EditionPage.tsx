@@ -12,20 +12,6 @@ const EditionPage = () => {
     const [dragItem, setDragItem] = useState<number|null>(null);
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
-    // let currentElement: HTMLDivElement|null = null;
-    
-
-    // const [isDragging, setIsDraggin] = useState(false);
-
-    // const dragStartHandle = (event:DragEvent<HTMLElement>) => {
-    //     const element = event.target as HTMLDivElement;
-    //     element.classList.add(css['edition-page__field--on-start-drag']);
-
-    //     currentElement = element;
-    //     event.dataTransfer.effectAllowed = 'move';
-    //     event.dataTransfer.setData('', element.innerHTML);
-    //     // setIsDraggin(true);
-    // }
 
     const dragStartHandle = (event: DragEvent<HTMLDivElement>, fieldId: string, currentPosition: number) => {
         setCurrentDragItemId(fieldId);
@@ -37,25 +23,6 @@ const EditionPage = () => {
         stageContext.sortFields(currentDragItemId!, dragItem!, dragOverItem!);
         event.currentTarget.classList.remove(css['edition-page__field--on-start-drag'], css['edition-page__field--hover']);
     }
-
-    // const dragOverHandle = (event:DragEvent<HTMLElement>) => {
-    //     event.preventDefault();
-    //     return false;
-    // }
-
-    // const dropHandle = (event:DragEvent<HTMLElement>) => {
-    //     event.stopPropagation();
-    //     const element = event.target as HTMLDivElement;
-
-    //     if(currentElement && currentElement !== element) {
-    //         currentElement!.innerHTML = element.innerHTML;
-    //         element.innerHTML = event.dataTransfer.getData('');
-    //         console.log(element.innerHTML);
-    //         element.classList.remove(css['edition-page__field--on-start-drag'], css['edition-page__field--hover']);
-    //     }
-    
-    //     return false;
-    // }
 
     const dragEnterHandle = (event:DragEvent<HTMLDivElement>, position:number) => {
         setDragOverItem(position)

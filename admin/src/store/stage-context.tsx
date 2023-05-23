@@ -36,11 +36,9 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
     if(action.type === ActionEnum.SORT) {
         const value = action.value as sortItem;
         const _state = [...state];
-
         const draggedItemContent = _state.splice(value.currentPosition, 1)[0];
         _state.splice(value.newPosition, 0, draggedItemContent);
         _state.forEach((item, index) => item.position = index);
-
         return _state;
     }
 
