@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { StageContext } from "../../store/stage-context";
-import Field, { FieldTypesEnum } from "../../models/Field";
+import Field from "../../models/Field";
 import Button, { ButtonStyle } from "../ui/Button/Button";
+import { FieldTypesEnum } from "../FieldFactory/FieldFactory";
 import { FieldBaseType } from "../../models/Field";
 
 const DUMMY_FIELD_TYPES_LIST = [

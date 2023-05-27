@@ -6,6 +6,7 @@ import { StageContext } from '../../store/stage-context';
 import ControllersList from '../../components/ControllersList/ControllersList';
 
 import css from './EditionPage.module.scss';
+import FieldFactory from "../../components/FieldFactory/FieldFactory";
 
 const EditionPage = () => {
     const stageContext = useContext(StageContext);
@@ -35,7 +36,6 @@ const EditionPage = () => {
 
     const fields = stageContext.fields.map((item, i) => 
         <div
-            key={item.id} 
             className={css['edition-page__field']}
             onClick={stageContext.removeField.bind(null, item.id)}
             draggable="true"
@@ -44,8 +44,11 @@ const EditionPage = () => {
             onDragEnter={event => dragEnterHandle(event, i)}
             onDragLeave={dragLeaveHandle}
             onDragEnd={dragEndHandle}>
-                { item.label }
-        </div>
+            <FieldFactory 
+                fieldType={item.type}
+                additionalProps={{ field:item }}
+                editionMode={true} />
+            </div>
     );
     
     return (

@@ -1,9 +1,4 @@
-import React from "react";
-
-export enum FieldTypesEnum {
-    TEXT_FIELD = 'TEXT_FIELD',
-    TEXTAREA = 'TEXTAREA',
-}
+import { FieldTypesEnum } from "../components/FieldFactory/FieldFactory";
 
 export type FieldBaseType = {
     type: FieldTypesEnum;

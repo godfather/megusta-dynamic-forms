@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react"
 
 import css from './Button.module.scss';
-import { FieldTypesEnum } from "../../../models/Field";
+import { FieldTypesEnum } from "../../FieldFactory/FieldFactory";
 
 export enum ButtonStyle {
     DEFAULT = 'default', 
