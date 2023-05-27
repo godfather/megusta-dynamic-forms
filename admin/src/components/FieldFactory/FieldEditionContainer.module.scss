@@ -1,0 +1,48 @@
+@import '../../scss/variables';
+
+.edition-container {
+    &:hover {
+        .actions {
+            opacity: 1;
+        }
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+        position: relative;
+        top: 15px;
+        justify-content: flex-end;
+        opacity: 0;
+        transition: opacity .3s;
+
+        .button {
+            text-transform: uppercase;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 3px 5px;
+            cursor: pointer;
+
+            &-default {
+                border: 1px solid $color-highlighted;
+                border-radius: 3px;
+                color: $color-highlighted;
+                background-color: $color-primary-light;
+            }
+
+            &-danger {
+                border: 1px solid $color-danger;
+                border-radius: 3px;
+                color: $color-primary-light;
+                background-color: $color-danger;
+            }
+
+            &-main {
+                border: 1px solid $color-highlighted;
+                border-radius: 3px;
+                color: $color-highlighted;
+                background-color: $color-primary-light;
+            }
+        }        
+    }
+}

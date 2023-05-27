@@ -15,30 +15,12 @@ type FieldFactoryProps = {
 }
 
 
-
-
-export const FieldEditionContainer: React.FC<PropsWithChildren> = (props) => {
-    return (
-        <div>
-            <div>
-                <button>Edit</button> | <button>remove</button>
-            </div>            
-            { props.children }
-        </div>
-    )
-}
-
-
 const FieldFactory: React.FC<PropsWithChildren<FieldFactoryProps>> = (props) => {
 
     let element = <TextField field={props.additionalProps!.field} />;
 
     if(props.fieldType === FieldTypesEnum.TEXTAREA) {
         element = <TextArea field={props.additionalProps!.field} />;
-    }
-
-    if(props.editionMode) {
-        element = <FieldEditionContainer>{element}</FieldEditionContainer>
     }
 
     return element;

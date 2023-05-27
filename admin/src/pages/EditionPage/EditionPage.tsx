@@ -7,6 +7,7 @@ import ControllersList from '../../components/ControllersList/ControllersList';
 
 import css from './EditionPage.module.scss';
 import FieldFactory from "../../components/FieldFactory/FieldFactory";
+import FieldEditionContainer from "../../components/FieldFactory/FieldEditionContainer";
 
 const EditionPage = () => {
     const stageContext = useContext(StageContext);
@@ -35,10 +36,8 @@ const EditionPage = () => {
     }
 
     const fields = stageContext.fields.map((item, i) => 
-        <div
-            className={css['edition-page__field']}
-            onClick={stageContext.removeField.bind(null, item.id)}
-            draggable="true"
+        <FieldEditionContainer
+            onRemove={stageContext.removeField.bind(null, item.id)}            
             onDragStart={event => dragStartHandle(event, item.id, i)}
             onDragOver={event => event.preventDefault()}
             onDragEnter={event => dragEnterHandle(event, i)}
@@ -48,7 +47,7 @@ const EditionPage = () => {
                 fieldType={item.type}
                 additionalProps={{ field:item }}
                 editionMode={true} />
-            </div>
+            </FieldEditionContainer>
     );
     
     return (
