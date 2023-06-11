@@ -5,6 +5,7 @@ import TextArea from "./Fields/TextArea";
 import Checkbox from "./Fields/Checkbox";
 import CheckboxGroup from "./Fields/CheckboxGroup";
 import FileField from "./Fields/FileField";
+import RadioGroup from "./Fields/RadioGroup";
 
 export enum FieldTypesEnum {
     TEXT_FIELD = 'TEXT_FIELD',
@@ -36,6 +37,10 @@ const FieldFactory: React.FC<PropsWithChildren<FieldFactoryProps>> = (props) => 
 
     if(props.fieldType === FieldTypesEnum.CHECKBOX_GROUP) {
         element = <CheckboxGroup field={props.additionalProps!.field} />
+    }
+
+    if(props.fieldType === FieldTypesEnum.RADIO_GROUP) {
+        element = <RadioGroup field={props.additionalProps!.field} />
     }
 
     if(props.fieldType === FieldTypesEnum.FILE) {
