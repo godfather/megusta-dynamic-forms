@@ -7,6 +7,7 @@
     &__container {
         display: flex;
         justify-content: space-between;
+        gap: 20px;
         margin-top: $default-padding;
     }
 
@@ -17,9 +18,16 @@
     &__controllers {
         min-width: calc(((100% - 2 * 10px) / 3));
         div {
+            box-sizing: border-box;
             display: flex;
             justify-content: space-between;
             flex-grow: 1;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            button {
+                width: 50%;
+            }
         }
     }
 

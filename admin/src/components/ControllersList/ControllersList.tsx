@@ -8,6 +8,10 @@ import { FieldBaseType } from "../../models/Field";
 const DUMMY_FIELD_TYPES_LIST = [
     {type: FieldTypesEnum.TEXT_FIELD, label: 'Text Field', htmlType: 'text'},
     {type: FieldTypesEnum.TEXTAREA, label: 'Textarea', htmlType: 'textarea'},
+    {type: FieldTypesEnum.CHECKBOX, label: 'Checkbox', htmlType: 'checkbox'},
+    {type: FieldTypesEnum.CHECKBOX_GROUP, label: 'Checkbox Group', htmlType: 'checkboxGroup'},
+    {type: FieldTypesEnum.RADIO_GROUP, label: 'Radio Group', htmlType: 'radio'},
+    {type: FieldTypesEnum.FILE, label: 'File', htmlType: 'file'},
 ];
 
 const ControllersList = () => {

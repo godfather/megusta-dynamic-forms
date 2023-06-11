@@ -18,6 +18,13 @@ textarea {
         &:disabled {
             box-shadow: none;
         }
+
+        &--checkbox {
+            width: initial;
+            margin-left: 10px;
+            padding: 10px !important;
+            border-radius: 6px;
+        }
     }
 }
 
@@ -26,6 +33,12 @@ label {
         font-size: 12px;
         font-weight: 600;
         max-width: 100%;
+
+        &--option {
+            display: flex;
+            height: 30px;
+            align-items: center;
+        }
     }
 }
 

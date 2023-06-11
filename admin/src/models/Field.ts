@@ -8,6 +8,7 @@ export type FieldBaseType = {
 
 export default class Field {
     public position: number;
+    public options: string[];
     private _id: string;
 
     constructor(
@@ -16,6 +17,7 @@ export default class Field {
         private _htmlType: string
     ) {
         this.position = 0;
+        this.options = [ 'option 1', 'option 2', 'option 3'];
         this._id = Date.now().toString();
     }
 
