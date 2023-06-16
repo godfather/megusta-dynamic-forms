@@ -14,6 +14,7 @@ export enum FieldTypesEnum {
     CHECKBOX_GROUP = 'CHECKBOX_GROUP',
     RADIO_GROUP = 'RADIO_GROUP',
     FILE = 'FILE',
+    EMAIL = 'EMAIL',
 }
 
 type FieldFactoryProps = { 

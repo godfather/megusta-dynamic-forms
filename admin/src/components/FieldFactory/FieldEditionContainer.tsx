@@ -1,5 +1,7 @@
-import { DragEvent, MouseEvent, PropsWithChildren } from "react";
+import { DragEvent, MouseEvent, PropsWithChildren, useState } from "react";
 import css from './FieldEditionContainer.module.scss'
+import FieldEditionForm from "./FieldEditionForm/FieldEditionForm";
+import Field from "../../models/Field";
 
 type FieldEditionContainerProps = {
     onRemove: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -8,9 +10,15 @@ type FieldEditionContainerProps = {
     onDragEnter: (event:DragEvent<HTMLDivElement>) => void;
     onDragLeave: (event:DragEvent<HTMLDivElement>) => void;
     onDragEnd: (event:DragEvent<HTMLDivElement>) => void;
+    field: Field;
 }
 
 const FieldEditionContainer: React.FC<PropsWithChildren<FieldEditionContainerProps>> = (props) => {
+    const [editionOpen, setEditionOpen] = useState(false);
+
+    const openEditionHandler = (event:MouseEvent<HTMLButtonElement>) => setEditionOpen(lastState => !lastState);
+    const closeEditionHandler = (event:MouseEvent<HTMLButtonElement>) => setEditionOpen(lastState => !lastState);
+
     return (
         <div
             className={css['edition-container']}
@@ -21,10 +29,11 @@ const FieldEditionContainer: React.FC<PropsWithChildren<FieldEditionContainerPro
             onDragLeave={props.onDragLeave}
             onDragEnd={props.onDragEnd}>
             <div className={css.actions}>
-                <button className={`${css.button} ${css['button-default']}`}>Edit</button>
+                <button className={`${css.button} ${css['button-default']}`} onClick={openEditionHandler}>Edit</button>
                 <button className={`${css.button} ${css['button-danger']}`} onClick={props.onRemove}>remove</button>
             </div>            
             { props.children }
+            {editionOpen && <FieldEditionForm  field={props.field} onClose={closeEditionHandler} />}
         </div>
     )
 }

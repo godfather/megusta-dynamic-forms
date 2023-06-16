@@ -7,6 +7,7 @@ import { FieldBaseType } from "../../models/Field";
 
 const DUMMY_FIELD_TYPES_LIST = [
     {type: FieldTypesEnum.TEXT_FIELD, label: 'Text Field', htmlType: 'text'},
+    {type: FieldTypesEnum.EMAIL, label: 'Text Field', htmlType: 'email'},
     {type: FieldTypesEnum.TEXTAREA, label: 'Textarea', htmlType: 'textarea'},
     {type: FieldTypesEnum.CHECKBOX, label: 'Checkbox', htmlType: 'checkbox'},
     {type: FieldTypesEnum.CHECKBOX_GROUP, label: 'Checkbox Group', htmlType: 'checkboxGroup'},
