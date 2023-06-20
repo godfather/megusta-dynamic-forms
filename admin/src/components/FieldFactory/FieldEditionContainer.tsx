@@ -10,6 +10,7 @@ type FieldEditionContainerProps = {
     onDragEnter: (event:DragEvent<HTMLDivElement>) => void;
     onDragLeave: (event:DragEvent<HTMLDivElement>) => void;
     onDragEnd: (event:DragEvent<HTMLDivElement>) => void;
+    onUpdate: (field:Field) => void;
     field: Field;
 }
 
@@ -33,7 +34,7 @@ const FieldEditionContainer: React.FC<PropsWithChildren<FieldEditionContainerPro
                 <button className={`${css.button} ${css['button-danger']}`} onClick={props.onRemove}>remove</button>
             </div>            
             { props.children }
-            {editionOpen && <FieldEditionForm  field={props.field} onClose={closeEditionHandler} />}
+            {editionOpen && <FieldEditionForm  onUpdate={props.onUpdate} field={props.field} onClose={closeEditionHandler} />}
         </div>
     )
 }

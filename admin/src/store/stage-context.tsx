@@ -5,6 +5,7 @@ type StageContextType = {
     formTitle:string|null;
     fields:Field[];
     addField:(field:FieldBaseType) => void;
+    updateField:(field:Field) => void;
     removeField:(field:string) => void;
     sortFields: (field:string, currentPosition:number, newPosition:number) => void;
 }
@@ -17,6 +18,7 @@ type sortItem = {
 
 enum ActionEnum {
     ADD = 'ADD',
+    UPDATE = 'UPDATE',
     REMOVE = 'REMOVE',
     SORT = 'SORT'
 };
@@ -42,6 +44,12 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
         return _state;
     }
 
+    if(action.type === ActionEnum.UPDATE) {
+        const newField = action.value! as Field;
+        const _state = state.filter(item => item.id !== newField.id);
+        return _state.concat(newField);
+    }
+
     return [];
 }
 
@@ -50,6 +58,7 @@ export const StageContext = React.createContext<StageContextType>({
     formTitle:null,
     fields:[],
     addField: (field:FieldBaseType) => {},
+    updateField: (field:Field) => {},
     removeField: () => {},
     sortFields: (field:string, currentPosition:number, newPosition:number) => {} 
 });
@@ -73,10 +82,15 @@ const StageContextProvider: React.FC<PropsWithChildren> = (props) => {
         }});
     }
 
+    const updateFieldHabdler = (field:Field) => {
+        dispatchFieldsList({ type: ActionEnum.UPDATE, value:field });
+    }
+
     const contextValues: StageContextType = {
         formTitle:null,
         fields:fieldsList,
         addField: addFieldHandler,
+        updateField: updateFieldHabdler,
         removeField: removeFieldHandler,
         sortFields: sortFieldsHandler,
     };

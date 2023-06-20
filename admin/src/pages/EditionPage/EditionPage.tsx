@@ -8,6 +8,7 @@ import ControllersList from '../../components/ControllersList/ControllersList';
 import css from './EditionPage.module.scss';
 import FieldFactory from "../../components/FieldFactory/FieldFactory";
 import FieldEditionContainer from "../../components/FieldFactory/FieldEditionContainer";
+import Field from "../../models/Field";
 
 const EditionPage = () => {
     const stageContext = useContext(StageContext);
@@ -35,6 +36,10 @@ const EditionPage = () => {
         event.currentTarget.classList.remove(css['edition-page__field--hover']);
     }
 
+    const updateFieldHandler = (newField:Field): void  => {
+        stageContext.updateField(newField);
+    }
+
     const fields = stageContext.fields.map((item, i) => 
         <FieldEditionContainer
             onRemove={stageContext.removeField.bind(null, item.id)}            
@@ -44,6 +49,7 @@ const EditionPage = () => {
             onDragLeave={dragLeaveHandle}
             onDragEnd={dragEndHandle}
             field={item}
+            onUpdate={updateFieldHandler}
             key={item.id}>
             <FieldFactory 
                 fieldType={item.type}
