@@ -4,12 +4,11 @@ import Field from "../../../models/Field";
 import { FieldTypesEnum } from "../FieldFactory";
 
 import css from './FieldEditionForm.module.scss';
+import SwitchButton from "../Fields/Switch";
 
 const FieldEditionForm: React.FC<{ field:Field, onClose:(event: MouseEvent<HTMLButtonElement>) => void }> = (props) => {
-
     let optionsField:ReactElement | undefined = undefined;
-
-
+    
     const saveFieldHandler = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     }
@@ -34,7 +33,11 @@ const FieldEditionForm: React.FC<{ field:Field, onClose:(event: MouseEvent<HTMLB
     }
 
     return <Box className={css['edition-form']} title='edition'>
-        <form>
+        <form>            
+            <div className={css['field-group']}>
+                <label htmlFor="fieldRequered">Required</label>
+                <SwitchButton name="required" id="fieldRequered" />
+            </div>
             <div className={css['field-group']}>
                 <label htmlFor="fieldLabel">Label</label>
                 <input type="text" id="fieldLabel" name="field_label" value={props.field.label}/>
@@ -50,9 +53,9 @@ const FieldEditionForm: React.FC<{ field:Field, onClose:(event: MouseEvent<HTMLB
 
             { optionsField }
 
-            <div className={css['field-group-row']}>
-                <button className={`${css.button} ${css['button-default']}`} onClick={saveFieldHandler}>Save</button>
-                <button className={`${css.button} ${css['button-danger']}`} onClick={props.onClose}>Cancel</button>
+            <div className={`${css['field-group-row']} ${css.actions}`}>
+                <button className={css.button} onClick={saveFieldHandler}>Save</button>
+                <button className={`${css.button} ${css['button--secondary']}`} onClick={props.onClose}>Cancel</button>
             </div>
         </form>
     </Box>;

@@ -43,7 +43,8 @@ const EditionPage = () => {
             onDragEnter={event => dragEnterHandle(event, i)}
             onDragLeave={dragLeaveHandle}
             onDragEnd={dragEndHandle}
-            field={item}>
+            field={item}
+            key={item.id}>
             <FieldFactory 
                 fieldType={item.type}
                 additionalProps={{ field:item }}
