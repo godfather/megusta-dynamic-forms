@@ -5,30 +5,55 @@ import { FieldTypesEnum } from "../FieldFactory";
 
 import css from './FieldEditionForm.module.scss';
 import SwitchButton from "../Fields/Switch";
+import FieldEditionInput from "./FieldEditionInput";
 
-const FieldEditionForm: React.FC<{ field:Field, onClose:(event: MouseEvent<HTMLButtonElement>) => void }> = (props) => {
+type FieldEditionFormProps = {
+    field: Field;
+    onClose: (event: MouseEvent<HTMLButtonElement>) => void;
+    onUpdate: (field:Field) => void;
+}
+
+
+const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
     let optionsField:ReactElement | undefined = undefined;
+
     
     const saveFieldHandler = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
+        props.onUpdate(props.field);
     }
 
+    const formEditionStructure = [
+        { id: 'fieldLabel', name:'field_label', label:'Label', type:'text', value:props.field.label },
+        { id: 'fieldName', name:'field_name', label:'Name', type:'text', value:props.field.name },
+        { id: 'fieldTip', name:'field_tip', label:'Tip', type:'text', value:props.field.tip },
+    ]
 
     if(props.field.type === FieldTypesEnum.CHECKBOX_GROUP || props.field.type === FieldTypesEnum.RADIO_GROUP) {
-        optionsField = <div className={css['field-group']}>
-            <label htmlFor="fieldName">Options</label>
-            <input type="text" id="fieldOptions" name="field_name" value={props.field.options }/>
-        </div>
+        optionsField = <FieldEditionInput 
+            type='text'
+            id='fieldOptions' 
+            name='field_options'
+            label='Options'
+            value=''
+            className={css['field-group']} />
     } else {
         optionsField = <div className={`${css['field-group']} ${css['field-group-row']}`}>
-            <div className={css['validation-field']}>
-                <label htmlFor="fieldMin">Min</label>
-                <input type="text" id="fieldMin" name="field_min" />
-            </div>
-            <div className={css['validation-field']}>
-                <label htmlFor="fieldMax">Max</label>
-                <input type="text" id="fieldMax" name="field_max" />
-            </div>
+            <FieldEditionInput 
+                type='text'
+                id='fieldMin' 
+                name='field_min'
+                label='Min'
+                value=''
+                className={css['validation-field']} />
+
+            <FieldEditionInput 
+                type='text'
+                id='fieldMax' 
+                name='field_max'
+                label='Max'
+                value=''
+                className={css['validation-field']} />
         </div>
     }
 
@@ -38,18 +63,15 @@ const FieldEditionForm: React.FC<{ field:Field, onClose:(event: MouseEvent<HTMLB
                 <label htmlFor="fieldRequered">Required</label>
                 <SwitchButton name="required" id="fieldRequered" />
             </div>
-            <div className={css['field-group']}>
-                <label htmlFor="fieldLabel">Label</label>
-                <input type="text" id="fieldLabel" name="field_label" value={props.field.label}/>
-            </div>
-            <div className={css['field-group']}>
-                <label htmlFor="fieldName">Name</label>
-                <input type="text" id="fieldName" name="field_name" value={props.field.name}/>
-            </div>
-            <div className={css['field-group']}>
-                <label htmlFor="fieldTip">Tip</label>
-                <input type="text" id="fieldTip" name="field_tip" />
-            </div>
+
+            { formEditionStructure.map( field => <FieldEditionInput 
+                type={field.type} 
+                id={field.id} 
+                name={field.name} 
+                label={field.label} 
+                value={field.value} 
+                className={css['field-group']} />
+            )}
 
             { optionsField }
 
