@@ -30,11 +30,23 @@
 
         input {
             background-color: $color-primary-light;
+            border:none;
+
+            &.inputError {
+                border: 2px dashed $color-danger;
+            }
         }
     }
 
     .validation-field {
         margin-right: 20px;            
+    }
+
+    .required-field-group {
+        flex-direction: revert;
+        align-items: center;
+        justify-content: flex-end;
+        column-gap: 10px;
     }
 
     .actions {
