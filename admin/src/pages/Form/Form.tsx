@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import css from './Form.module.scss';
-import buttonCss from '../ui/Button/Button.module.scss';
+import buttonCss from '../../components/ui/Button/Button.module.scss';
 
 const Form: React.FC<PropsWithChildren> = (props) => {
     const submitHandler = (event:React.FormEvent) => {

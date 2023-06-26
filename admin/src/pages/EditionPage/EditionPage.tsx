@@ -1,6 +1,6 @@
 import { DragEvent, useContext, useRef, useState } from "react";
 
-import Form from "../../components/Form/Form";
+import Form from "../Form/Form";
 import Box from "../../components/ui/Box/Box";
 import { StageContext } from '../../store/stage-context';
 import ControllersList from '../../components/ControllersList/ControllersList';
