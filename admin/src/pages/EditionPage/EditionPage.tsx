@@ -62,7 +62,7 @@ const EditionPage = () => {
         <div className={css['edition-page']}>
             <Form>
               <div className={css['edition-page__container']}>
-                <Box className={css['edition-page__stage']} title="Add Title">
+                <Box className={css['edition-page__stage']} title={editionContext.formTitle!}>
                     {fields.length > 0 ? fields : 'No fields' }
                 </Box>
                 <Box className={css['edition-page__controllers']} title='Fields'>

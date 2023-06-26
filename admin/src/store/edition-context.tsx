@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useReducer } from "react"
+import React, { PropsWithChildren, useReducer, useState } from "react"
 import Field, { FieldBaseType } from "../models/Field";
 
 type StageContextType = {
@@ -8,6 +8,7 @@ type StageContextType = {
     updateField:(field:Field) => void;
     removeField:(field:string) => void;
     sortFields: (field:string, currentPosition:number, newPosition:number) => void;
+    updateFormTitle:(title:string) => void;
 }
 
 type sortItem = {
@@ -67,10 +68,13 @@ export const EditionContext = React.createContext<StageContextType>({
     addField: (field:FieldBaseType) => {},
     updateField: (field:Field) => {},
     removeField: () => {},
-    sortFields: (field:string, currentPosition:number, newPosition:number) => {} 
+    sortFields: (field:string, currentPosition:number, newPosition:number) => {},
+    updateFormTitle: (title:string) => {} 
 });
 
 const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
+    const [ formTitle, setFormTitle ] = useState('Add Title');
+
     const [ fieldsList, dispatchFieldsList ] = useReducer(fieldsReducer, []);
 
     const addFieldHandler = (fieldType: FieldBaseType) => {
@@ -93,13 +97,18 @@ const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
         dispatchFieldsList({ type: ActionEnum.UPDATE, value:field });
     }
 
+    const updateFormTitleHandler = (title: string) => {
+        setFormTitle(title);
+    }
+
     const contextValues: StageContextType = {
-        formTitle:null,
+        formTitle:formTitle,
         fields:fieldsList,
         addField: addFieldHandler,
         updateField: updateFieldHandler,
         removeField: removeFieldHandler,
         sortFields: sortFieldsHandler,
+        updateFormTitle: updateFormTitleHandler,
     };
 
     return (
