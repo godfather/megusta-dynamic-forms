@@ -5,7 +5,7 @@ import Checkbox from "./Checkbox";
 
 const CheckboxGroup: React.FC<{ field:Field }> = (props) => {
 
-    const options = props.field.options.map( opt => <Checkbox field={props.field} value={opt} />)
+    const options = props.field.options.map( (opt, i) => <Checkbox key={i} field={props.field} value={opt} />)
 
     return (
         <>

@@ -5,7 +5,7 @@ import Radio from "./Radio";
 
 const RadioGroup: React.FC<{ field:Field }> = (props) => {
 
-    const options = props.field.options.map( opt => <Radio field={props.field} value={opt} />)
+    const options = props.field.options.map( (opt, i) => <Radio key={i} field={props.field} value={opt} />)
 
     return (
         <>

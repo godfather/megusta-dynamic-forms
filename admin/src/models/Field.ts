@@ -9,9 +9,11 @@ export type FieldBaseType = {
 export default class Field {
     public position: number;
     public options: string[];
-    public name: string;
+    public name: string | undefined;
     public tip: string;
-    public _validations: string[];
+    public min: string;
+    public max: string;
+    private _validations: string[];
     private _id: string;
 
     constructor(
@@ -22,8 +24,10 @@ export default class Field {
         this.position = 0;
         this.options = [ 'option 1', 'option 2', 'option 3'];
         this._id = Date.now().toString();
-        this.name = this._label.replace(/\s+/ig, '_').toLowerCase();
+        this.name = '';
         this.tip = '';
+        this.min = '0';
+        this.max = '';
         this._validations = [];
 
         this._initializeValidationsByFieldType();
@@ -31,6 +35,10 @@ export default class Field {
 
     public get id() {
         return this._id;
+    }
+
+    public set id(newId:string) {
+        this._id = newId;
     }
 
     public get type():FieldTypesEnum {
@@ -43,6 +51,10 @@ export default class Field {
 
     public get htmlType():string {
         return this._htmlType;
+    }
+
+    public get defaulName(): string {
+        return this.name ? this.name : this._label.replace(/\s+/ig, '_').toLowerCase()
     }
 
     private _initializeValidationsByFieldType():void {

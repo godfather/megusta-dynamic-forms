@@ -24,7 +24,7 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
         onBlurHandler: labelOnBlurHandler,
         reset: labelReset
     } = useValidationHook(props.field.label, (value) => {
-        return !validator.isEmpty(value);
+        return (!validator.isEmpty(value) && validator.isAlphanumeric(value, 'en-US', { ignore: /[ -_,.!@$%&*]+/g}));
     });
 
     const {
@@ -34,8 +34,8 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
         onChangeHandler: nameOnChangeHandler,
         onBlurHandler: nameOnBlurHandler,
         reset: nameReset
-    } = useValidationHook(props.field.name, (value) => {
-        return !validator.isEmpty(value);
+    } = useValidationHook(props.field.defaulName, (value) => {
+        return (!validator.isEmpty(value) && validator.isSlug(value));
     });
 
     const {
@@ -46,16 +46,74 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
         onBlurHandler: tipOnBlurHandler,
         reset: tipReset
     } = useValidationHook(props.field.tip, (value) => {
-        return !validator.isEmpty(value);
+        if(value) return validator.isAlphanumeric(value, 'en-US', { ignore: /[ -_,.!@$%&*:]+/g});
+        return true;
+    });
+
+    const {
+        value: minValue,
+        isValid: minIsValid,
+        hasError: minHasError,
+        onChangeHandler: minOnChangeHandler,
+        onBlurHandler: minOnBlurHandler,
+        reset: minReset
+    } = useValidationHook(props.field.min, (value) => {
+        if(value) return validator.isNumeric(value);
+        return true;
+    });
+
+    const {
+        value: maxValue,
+        isValid: maxIsValid,
+        hasError: maxHasError,
+        onChangeHandler: maxOnChangeHandler,
+        onBlurHandler: maxOnBlurHandler,
+        reset: maxReset
+    } = useValidationHook(props.field.max, (value) => {
+        if(value) return validator.isNumeric(value);
+        return true;
+    });
+
+    const {
+        value: optionsValue,
+        isValid: optionsIsValid,
+        hasError: optionsHasError,
+        onChangeHandler: optionsOnChangeHandler,
+        onBlurHandler: optionsOnBlurHandler,
+        reset: optionsReset
+    } = useValidationHook(props.field.options.join(','), (value) => {
+        return true;
+        // return !validator.isEmpty(value) && validator.isAlphanumeric(value, 'en-US', { ignore: /[ -_,.!@$%&*:]+/g});
     });
     
     const saveFieldHandler = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        if(labelIsValid && nameIsValid && tipIsValid) props.onUpdate(props.field);
+        if(labelIsValid && nameIsValid && tipIsValid && minIsValid && maxIsValid && optionsIsValid) {
+            const newField = new Field(
+                props.field.type,
+                labelValue,
+                props.field.htmlType
+            );
 
-        labelReset();
-        nameReset();
-        tipReset();
+            newField.name = nameValue;
+            newField.tip = tipValue;
+            newField.position = props.field.position;
+            newField.id = props.field.id;
+            newField.min = minValue;
+            newField.max = maxValue;
+            newField.options = optionsValue.split(/[,;]/);
+
+
+            props.onUpdate(newField);
+
+            labelReset();
+            nameReset();
+            tipReset();
+            minReset();
+            maxReset();
+            optionsReset();
+            props.onClose(event);
+        }
     }
 
     const formEditionStructure = [
@@ -90,40 +148,40 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
             onChange:tipOnChangeHandler, 
             onBlur: tipOnBlurHandler, 
             hasError:tipHasError,
-            errorMessage:''
+            errorMessage:'Some characters are not allowed!'
         },
         { 
             id: 'fieldOptions', 
             name:'field_options', 
             label:'Options', 
             type:'text', 
-            value:props.field.options.join(','), 
-            onChange:labelOnChangeHandler, 
-            onBlur: labelOnBlurHandler, 
-            hasError:labelHasError,
-            errorMessage:'Options cannot be empty.'
+            value: optionsValue, 
+            onChange:optionsOnChangeHandler, 
+            onBlur: optionsOnBlurHandler, 
+            hasError:optionsHasError,
+            errorMessage:'Options cannot be empty and need to be separated by coma.'
         },
         { 
             id: 'fieldMin', 
             name:'field_min', 
             label:'Min', 
-            type:'text', 
-            value:'', 
-            onChange:labelOnChangeHandler, 
-            onBlur: labelOnBlurHandler, 
-            hasError:labelHasError,
-            errorMessage:''
+            type:'number', 
+            value:minValue, 
+            onChange:minOnChangeHandler, 
+            onBlur: minOnBlurHandler, 
+            hasError:minHasError,
+            errorMessage:'Only numbers are allowed.'
         },
         { 
             id: 'fieldMax', 
             name:'field_max', 
             label:'Max', 
-            type:'text', 
-            value:'', 
-            onChange:labelOnChangeHandler, 
-            onBlur: labelOnBlurHandler, 
-            hasError:labelHasError,
-            errorMessage:''
+            type:'number', 
+            value:maxValue, 
+            onChange:maxOnChangeHandler, 
+            onBlur: maxOnBlurHandler, 
+            hasError:maxHasError,
+            errorMessage:'Only numbers are allowed.'
         },
     ];
 
@@ -131,6 +189,8 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
     
     if(props.field.type === FieldTypesEnum.CHECKBOX_GROUP || props.field.type === FieldTypesEnum.RADIO_GROUP) {
         finalFields = formEditionStructure.filter( field => (field.id !== 'fieldMin' && field.id !== 'fieldMax' ));
+    } else if(props.field.type === FieldTypesEnum.CHECKBOX) {
+        finalFields = formEditionStructure.filter( field => (field.id !== 'fieldMin' && field.id !== 'fieldMax' && field.id !== 'fieldOptions'));
     } else finalFields = formEditionStructure.filter( field => field.id !== 'fieldOptions');
 
 

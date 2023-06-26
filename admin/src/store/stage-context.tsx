@@ -45,9 +45,16 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
     }
 
     if(action.type === ActionEnum.UPDATE) {
+        console.log(action.value!);
         const newField = action.value! as Field;
-        const _state = state.filter(item => item.id !== newField.id);
-        return _state.concat(newField);
+        const _state = [...state];
+        const currentFieldIndex = state.findIndex(item => item.id === newField.id);
+
+        console.log(currentFieldIndex);
+
+        _state[currentFieldIndex] = newField;
+
+        return _state;
     }
 
     return [];
@@ -82,7 +89,7 @@ const StageContextProvider: React.FC<PropsWithChildren> = (props) => {
         }});
     }
 
-    const updateFieldHabdler = (field:Field) => {
+    const updateFieldHandler = (field:Field) => {
         dispatchFieldsList({ type: ActionEnum.UPDATE, value:field });
     }
 
@@ -90,7 +97,7 @@ const StageContextProvider: React.FC<PropsWithChildren> = (props) => {
         formTitle:null,
         fields:fieldsList,
         addField: addFieldHandler,
-        updateField: updateFieldHabdler,
+        updateField: updateFieldHandler,
         removeField: removeFieldHandler,
         sortFields: sortFieldsHandler,
     };
