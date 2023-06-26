@@ -8,7 +8,6 @@ const Radio: React.FC<{ field:Field, value?:string }> = (props) => {
 
     return (
         <label className={`${css.label} ${props.value ? css['label--option'] : ''}`} htmlFor={props.field.id}>
-            {label}
             <input
                 className={`${css.input} ${css['input--radio']}`}
                 id={props.field.id}
@@ -16,6 +15,7 @@ const Radio: React.FC<{ field:Field, value?:string }> = (props) => {
                 name={props.field.label}
                 value={props.value}
                 disabled />
+            {label}
         </label>
     );
 }
