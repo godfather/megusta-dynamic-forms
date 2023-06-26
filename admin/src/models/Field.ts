@@ -13,6 +13,7 @@ export default class Field {
     public tip: string;
     public min: string;
     public max: string;
+    public required: boolean;
     private _validations: string[];
     private _id: string;
 
@@ -29,6 +30,7 @@ export default class Field {
         this.min = '0';
         this.max = '';
         this._validations = [];
+        this.required = false;
 
         this._initializeValidationsByFieldType();
     }

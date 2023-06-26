@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import Box from "../../ui/Box/Box";
 import Field from "../../../models/Field";
 import { FieldTypesEnum } from "../FieldFactory";
@@ -16,6 +16,7 @@ type FieldEditionFormProps = {
 }
 
 const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
+    const [ isRequired, setIsRequired ] = useState(props.field.required);
     const {
         value: labelValue,
         isValid: labelIsValid,
@@ -82,8 +83,7 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
         onBlurHandler: optionsOnBlurHandler,
         reset: optionsReset
     } = useValidationHook(props.field.options.join(','), (value) => {
-        return true;
-        // return !validator.isEmpty(value) && validator.isAlphanumeric(value, 'en-US', { ignore: /[ -_,.!@$%&*:]+/g});
+        return !validator.isEmpty(value) && validator.isAlphanumeric(value, 'en-US', { ignore: /[ -_,.!@$%&*:]+/g});
     });
     
     const saveFieldHandler = (event: MouseEvent<HTMLButtonElement>) => {
@@ -102,6 +102,7 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
             newField.min = minValue;
             newField.max = maxValue;
             newField.options = optionsValue.split(/[,;]/);
+            newField.required = isRequired;
 
 
             props.onUpdate(newField);
@@ -114,6 +115,10 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
             optionsReset();
             props.onClose(event);
         }
+    }
+
+    const isRequiredChangeHandler = () => {
+        setIsRequired(!isRequired);
     }
 
     const formEditionStructure = [
@@ -198,7 +203,11 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
         <div>            
             <div className={`${css['field-group']} ${css['required-field-group']}`}>
                 <label htmlFor="fieldRequered">Required</label>
-                <SwitchButton name="required" id="fieldRequered" />
+                <SwitchButton 
+                    name="required"
+                    id="fieldRequered" 
+                    checked={isRequired} 
+                    onChange={isRequiredChangeHandler} />
             </div>
 
             { 

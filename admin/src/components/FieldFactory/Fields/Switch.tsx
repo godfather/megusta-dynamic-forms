@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import css from './Fields.module.scss';
 
-const SwitchButton: React.FC<{ name: string, id: string }> = (props) => {
+type SwitchButtonProps = { 
+    className?: string;
+    name: string; 
+    id: string;
+    checked:boolean;
+    onChange:(event:ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SwitchButton: React.FC<SwitchButtonProps> = (props) => {
+    console.log(props.checked);
     return (
 
-        <label className={css.switch}>
-            <input type='checkbox' name={props.name} id={props.id}/>
+        <label className={`${css.switch} ${props.className}`}>
+            <input 
+                type='checkbox' 
+                name={props.name} 
+                id={props.id}
+                checked={props.checked}
+                onChange={props.onChange} />
             <span className={css.slider} />
         </label>
     );
