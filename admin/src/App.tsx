@@ -1,14 +1,14 @@
 import css from './App.module.scss';
 import EditionPage from './pages/EditionPage/EditionPage';
-import StageContextProvider from './store/stage-context';
+import EditionContextProvider from './store/edition-context';
 
 function App() {
   return (
-    <StageContextProvider>
+    <EditionContextProvider>
       <div className={css.app}>
         <EditionPage />
       </div>
-    </StageContextProvider>
+    </EditionContextProvider>
   );
 }
 

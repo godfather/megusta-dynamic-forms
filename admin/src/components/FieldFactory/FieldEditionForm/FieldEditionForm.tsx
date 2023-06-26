@@ -1,11 +1,11 @@
-import { MouseEvent, ReactElement } from "react";
+import { MouseEvent } from "react";
 import Box from "../../ui/Box/Box";
 import Field from "../../../models/Field";
 import { FieldTypesEnum } from "../FieldFactory";
 
 import css from './FieldEditionForm.module.scss';
 import SwitchButton from "../Fields/Switch";
-import FieldEditionInput, { FieldEditionInputProps } from "./FieldEditionInput";
+import FieldEditionInput from "./FieldEditionInput";
 import useValidationHook from "../../../hooks/validation-hook";
 import validator from "validator";
 

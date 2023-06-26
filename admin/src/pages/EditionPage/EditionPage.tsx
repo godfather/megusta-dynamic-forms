@@ -2,7 +2,7 @@ import { DragEvent, useContext, useRef, useState } from "react";
 
 import Form from "../Form/Form";
 import Box from "../../components/ui/Box/Box";
-import { StageContext } from '../../store/stage-context';
+import { EditionContext } from '../../store/edition-context';
 import ControllersList from '../../components/ControllersList/ControllersList';
 
 import css from './EditionPage.module.scss';
@@ -11,7 +11,7 @@ import FieldEditionContainer from "../../components/FieldFactory/FieldEditionCon
 import Field from "../../models/Field";
 
 const EditionPage = () => {
-    const stageContext = useContext(StageContext);
+    const editionContext = useContext(EditionContext);
     const [dragItem, setDragItem] = useState<number|null>(null);
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
@@ -23,7 +23,7 @@ const EditionPage = () => {
     }
 
     const dragEndHandle = (event:DragEvent<HTMLDivElement>) => {
-        stageContext.sortFields(currentDragItemId!, dragItem!, dragOverItem!);
+        editionContext.sortFields(currentDragItemId!, dragItem!, dragOverItem!);
         event.currentTarget.classList.remove(css['edition-page__field--on-start-drag'], css['edition-page__field--hover']);
     }
 
@@ -37,12 +37,12 @@ const EditionPage = () => {
     }
 
     const updateFieldHandler = (newField:Field): void  => {
-        stageContext.updateField(newField);
+        editionContext.updateField(newField);
     }
 
-    const fields = stageContext.fields.map((item, i) => 
+    const fields = editionContext.fields.map((item, i) => 
         <FieldEditionContainer
-            onRemove={stageContext.removeField.bind(null, item.id)}            
+            onRemove={editionContext.removeField.bind(null, item.id)}            
             onDragStart={event => dragStartHandle(event, item.id, i)}
             onDragOver={event => event.preventDefault()}
             onDragEnter={event => dragEnterHandle(event, i)}

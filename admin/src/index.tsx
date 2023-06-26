@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import StageContextProvider from './store/stage-context';
+import StageContextProvider from './store/edition-context';
 
 const root = ReactDOM.createRoot(
   document.getElementById('mdf-root') as HTMLElement

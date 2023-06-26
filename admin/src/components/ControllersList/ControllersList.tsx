@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { StageContext } from "../../store/stage-context";
+import { EditionContext } from "../../store/edition-context";
 import Field from "../../models/Field";
 import Button, { ButtonStyle } from "../ui/Button/Button";
 import { FieldTypesEnum } from "../FieldFactory/FieldFactory";
@@ -16,10 +16,10 @@ const DUMMY_FIELD_TYPES_LIST = [
 ];
 
 const ControllersList = () => {
-    const stageContext = useContext(StageContext);
+    const editionContext = useContext(EditionContext);
 
     const clickHandler = (field:FieldBaseType) => {
-        stageContext.addField(field);
+        editionContext.addField(field);
     }
     
     const buttonFields = DUMMY_FIELD_TYPES_LIST.map(item => 

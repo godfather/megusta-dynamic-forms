@@ -61,7 +61,7 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
 }
 
 
-export const StageContext = React.createContext<StageContextType>({
+export const EditionContext = React.createContext<StageContextType>({
     formTitle:null,
     fields:[],
     addField: (field:FieldBaseType) => {},
@@ -70,7 +70,7 @@ export const StageContext = React.createContext<StageContextType>({
     sortFields: (field:string, currentPosition:number, newPosition:number) => {} 
 });
 
-const StageContextProvider: React.FC<PropsWithChildren> = (props) => {
+const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
     const [ fieldsList, dispatchFieldsList ] = useReducer(fieldsReducer, []);
 
     const addFieldHandler = (fieldType: FieldBaseType) => {
@@ -103,9 +103,9 @@ const StageContextProvider: React.FC<PropsWithChildren> = (props) => {
     };
 
     return (
-        <StageContext.Provider value={contextValues}>{props.children}</StageContext.Provider>
+        <EditionContext.Provider value={contextValues}>{props.children}</EditionContext.Provider>
     )
 }
 
 
-export default StageContextProvider;
+export default EditionContextProvider;
