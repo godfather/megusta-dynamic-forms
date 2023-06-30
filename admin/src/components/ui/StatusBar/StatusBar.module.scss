@@ -1,0 +1,65 @@
+@import '../../../scss/variables';
+
+.status {
+    position: relative;
+    box-sizing: border-box;
+    padding: 0 20px;
+    border: 2px solid $color-border-light;
+    border-radius: $border-radius;
+    margin-bottom: 30px;
+    background-color: $bg-primary-color;
+    color: $color-primary;
+    background-size: 80%;
+    background-position: 10px center;
+    font-weight: 600;
+
+
+    &__success {
+        background-color: $color-success;
+    }
+
+    &__alert {
+        color: $color-primary-light;
+        background-color: $color-highlighted;
+    }
+
+    &__error {
+        color: $color-primary-light;
+        background-color: $color-danger;
+    }
+
+    &__close {
+        position: absolute;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        background-color: transparent;
+        
+        &, 
+        &::before, 
+        &::after {
+            display: inline-block;
+            width: 20px;
+            height: 4px;            
+        }
+
+        &::before, 
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left:0;
+            transition: all .2s;
+            background-color: $color-primary;
+        }
+
+        &::before {
+            transform: rotate(135deg);
+        }
+
+        &::after {
+            transform: rotate(-135deg);
+        }
+    }
+}

@@ -1,4 +1,4 @@
-import { DragEvent, useContext, useRef, useState } from "react";
+import { DragEvent, MouseEvent, useContext, useState } from "react";
 
 import Form from "../Form/Form";
 import Box from "../../components/ui/Box/Box";
@@ -9,12 +9,15 @@ import css from './EditionPage.module.scss';
 import FieldFactory from "../../components/FieldFactory/FieldFactory";
 import FieldEditionContainer from "../../components/FieldFactory/FieldEditionContainer";
 import Field from "../../models/Field";
+import useApi, { RequestTypeEnum } from "../../hooks/api-hook";
+import StatusBar, { StatusBarTypeEnum } from "../../components/ui/StatusBar/StatusBar";
 
 const EditionPage = () => {
     const editionContext = useContext(EditionContext);
     const [dragItem, setDragItem] = useState<number|null>(null);
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
+    const [ status, setStatus ] = useState<StatusBarTypeEnum|null>(null);
 
     const dragStartHandle = (event: DragEvent<HTMLDivElement>, fieldId: string, currentPosition: number) => {
         setCurrentDragItemId(fieldId);
@@ -57,10 +60,42 @@ const EditionPage = () => {
                 editionMode={true} />
             </FieldEditionContainer>
     );
+
+    const { isLoading, error, sendRequest } = useApi();
+
+    const submitHandler = async (event:React.FormEvent) => {
+        event.preventDefault();
+
+        const bodyData = {
+            name: editionContext.formTitle,
+            fields: editionContext.fields.map(field => field.toJson())
+        };
+
+        console.log('submitHandler');
+
+        sendRequest({
+            url: 'http://local.woo.com/wp-json/mdf/v1/forms/',
+            body: bodyData,
+            method: RequestTypeEnum.POST,
+            headers: { 'Content-Type': 'application/json'}
+        }, (data) => {
+            console.log(data);            
+        })
+
+        setStatus(error ? StatusBarTypeEnum.ERROR : StatusBarTypeEnum.SUCCESS);
+    };
+
+
+    const closeStatusBarHandler = (event:MouseEvent<HTMLSpanElement>) => {
+        event.preventDefault();
+        setStatus(null);
+    }
     
     return (
-        <div className={css['edition-page']}>
-            <Form>
+        <div className={css['edition-page']}>      
+            { !error && status && <StatusBar onClick={closeStatusBarHandler} type={status} message="Sucesso!"/> }
+            { error && status && <StatusBar onClick={closeStatusBarHandler} type={status} message={error}/> }
+            <Form onSubmit={submitHandler} isLoading={isLoading}>
               <div className={css['edition-page__container']}>
                 <Box className={css['edition-page__stage']} title={editionContext.formTitle!}>
                     {fields.length > 0 ? fields : 'No fields' }

@@ -6,6 +6,16 @@ export type FieldBaseType = {
     htmlType: string;
 }
 
+type OutputType = {
+    position: number;
+    field_name: string;
+    field_label: string;
+    field_tip: string;
+    field_type: string;
+    field_validations: string;
+    field_options?: string;
+}
+
 export default class Field {
     public position: number;
     public options: string[];
@@ -57,6 +67,34 @@ export default class Field {
 
     public get defaulName(): string {
         return this.name ? this.name : this._label.replace(/\s+/ig, '_').toLowerCase()
+    }
+
+    public toJson() {
+        const output: OutputType = {
+            position: this.position,
+            field_name: this.name!,
+            field_label: this._label,
+            field_tip: this.tip,
+            field_type: this._htmlType.toLowerCase(),
+            field_validations: this._getValidations(),
+            field_options: this.options.join(';')
+        }
+
+        if(this._type !== FieldTypesEnum.CHECKBOX_GROUP && this._type !== FieldTypesEnum.RADIO_GROUP) {
+            delete output.field_options;
+        }
+
+        return output;
+    }
+
+    private _getValidations(): string {
+        const validations: string[] = [];
+        if(this.required) validations.push('required');
+        if(this.min) validations.push('min:' + this.min);
+        if(this.max) validations.push('max:' + this.max);
+
+        const finalValidations = this._validations.concat(validations);
+        return finalValidations.join(';');
     }
 
     private _initializeValidationsByFieldType():void {

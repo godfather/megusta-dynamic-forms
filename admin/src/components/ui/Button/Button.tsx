@@ -26,7 +26,7 @@ const Button: React.FC<{
             `${css.button} ${css['button--default']}`;
 
         return(
-            <button className={cssClasses} onClick={onClickHandler}>{props.children}</button>
+            <button type="button" className={cssClasses} onClick={onClickHandler}>{props.children}</button>
         )
 }
 

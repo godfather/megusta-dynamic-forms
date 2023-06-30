@@ -44,6 +44,7 @@ use MDF\Data\MDFDatabaseDefinition;
     public static function getFieldTypes() {
         return [
             'text',
+            'textarea',
             'email',
             'date',
             'number',
