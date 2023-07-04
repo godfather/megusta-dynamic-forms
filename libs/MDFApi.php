@@ -81,7 +81,7 @@
     public function createForm($request = []) {
         $formModel = new MDFFormModel();
         $formModel->setParams($request->get_params());
-        return  rest_ensure_response(['success' => $formModel->save()]);
+        return  rest_ensure_response($formModel->save());
     }
 
 
@@ -89,7 +89,7 @@
         $requestParams = $request->get_params();
         $form = new MDFFormModel($requestParams['id']);
         $form->setParams($requestParams);
-        return  rest_ensure_response(['success' => $form->update()]);
+        return  rest_ensure_response($form->update());
      }
 
      public function list($request) {

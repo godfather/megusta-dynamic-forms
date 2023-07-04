@@ -3,12 +3,14 @@ import Field, { FieldBaseType } from "../models/Field";
 
 type StageContextType = {
     formTitle:string|null;
+    formId:number|null;
     fields:Field[];
     addField:(field:FieldBaseType) => void;
     updateField:(field:Field) => void;
     removeField:(field:string) => void;
     sortFields: (field:string, currentPosition:number, newPosition:number) => void;
     updateFormTitle:(title:string) => void;
+    updateFormId:(id:number) => void;
 }
 
 type sortItem = {
@@ -64,16 +66,19 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
 
 export const EditionContext = React.createContext<StageContextType>({
     formTitle:null,
+    formId:null,
     fields:[],
     addField: (field:FieldBaseType) => {},
     updateField: (field:Field) => {},
     removeField: () => {},
     sortFields: (field:string, currentPosition:number, newPosition:number) => {},
-    updateFormTitle: (title:string) => {} 
+    updateFormTitle: (title:string) => {},
+    updateFormId: (id:number) => {} 
 });
 
 const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
     const [ formTitle, setFormTitle ] = useState('Add Title');
+    const [ formId, setFormId ] = useState<number|null>(null);
 
     const [ fieldsList, dispatchFieldsList ] = useReducer(fieldsReducer, []);
 
@@ -101,14 +106,20 @@ const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
         setFormTitle(title);
     }
 
+    const updateFormIdHandler = (id: number) => {
+        setFormId(id);
+    }
+
     const contextValues: StageContextType = {
         formTitle:formTitle,
+        formId:formId,
         fields:fieldsList,
         addField: addFieldHandler,
         updateField: updateFieldHandler,
         removeField: removeFieldHandler,
         sortFields: sortFieldsHandler,
         updateFormTitle: updateFormTitleHandler,
+        updateFormId: updateFormIdHandler,
     };
 
     return (

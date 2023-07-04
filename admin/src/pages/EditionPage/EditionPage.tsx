@@ -74,12 +74,14 @@ const EditionPage = () => {
         console.log('submitHandler');
 
         sendRequest({
-            url: 'http://local.woo.com/wp-json/mdf/v1/forms/',
+            url: 'http://local.woo.com/wp-json/mdf/v1/forms/' + (editionContext.formId || ''),
             body: bodyData,
             method: RequestTypeEnum.POST,
             headers: { 'Content-Type': 'application/json'}
-        }, (data) => {
-            console.log(data);            
+        }, async (response) => {
+            const data: {success: boolean; id?: number}  = await response.json();
+            console.log(data);
+            if(!editionContext.formId && data.id) editionContext.updateFormId(data.id);
         })
 
         setStatus(error ? StatusBarTypeEnum.ERROR : StatusBarTypeEnum.SUCCESS);

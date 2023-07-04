@@ -31,7 +31,7 @@ const useApi = () => {
             setIsLoading(false);
         }).catch(error => {
             // console.log(error.message);
-            setError(error.message);
+            setError(error.message || 'Unknow error!');
             setIsLoading(false);
         })
     }

@@ -15,7 +15,7 @@ type StatusBarProps = {
 
 const StatusBar: React.FC<StatusBarProps> = (props) => {
     return (
-        <div style={{ backgroundImage: `url('/exclamation-circle.svg')` }}className={`${css.status} ${css['status__' + props.type]}`}>
+        <div className={`${css.status} ${css['status__' + props.type]}`}>
             <p>{props.message}</p>
             <span className={css['status__close']} onClick={props.onClick} >&nbsp;</span>
         </div>

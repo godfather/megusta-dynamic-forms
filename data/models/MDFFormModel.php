@@ -57,7 +57,7 @@ use MDF\Data\MDFDatabaseDefinition;
             }
         }
 
-        return $success;
+        return [ 'success' => $success, 'id' => $formId ];
     }
 
     public function update($format = []) {
@@ -74,8 +74,8 @@ use MDF\Data\MDFDatabaseDefinition;
             $success = $success && !(false === $fieldUpdated);
          }
       }
-
-      return $success;
+      
+      return [ 'success' => $success, 'id' => $this->id];
     }
 
     public function load($id, $asArray) {

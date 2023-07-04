@@ -226,8 +226,8 @@ const FieldEditionForm: React.FC<FieldEditionFormProps> = (props) => {
             }
 
             <div className={`${css['field-group-row']} ${css.actions}`}>
-                <button className={css.button} onClick={saveFieldHandler}>Save</button>
-                <button className={`${css.button} ${css['button--secondary']}`} onClick={props.onClose}>Cancel</button>
+                <button type="button" className={css.button} onClick={saveFieldHandler}>Save</button>
+                <button type="button" className={`${css.button} ${css['button--secondary']}`} onClick={props.onClose}>Cancel</button>
             </div>
         </div>
     </Box>;

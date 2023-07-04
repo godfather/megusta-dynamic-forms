@@ -37,7 +37,7 @@ class MDFAdminController extends WP_REST_Controller {
    public function create($request) {
       $formModel = new MDFFormModel();
       $formModel->setParams($request->get_params());
-      return  rest_ensure_response(['success' => $formModel->save()]);
+      return  rest_ensure_response($formModel->save());
    }
 
    public function load($request) {
@@ -59,7 +59,7 @@ class MDFAdminController extends WP_REST_Controller {
       $form = new MDFFormModel($requestParams['id']);
       $form->setParams($requestParams);
 
-      return  rest_ensure_response(['success' => $form->update()]);
+      return  rest_ensure_response($form->update());
       // return  rest_ensure_response($form->toArray());
    }
 
