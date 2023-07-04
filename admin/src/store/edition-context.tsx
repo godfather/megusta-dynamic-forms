@@ -27,7 +27,7 @@ enum ActionEnum {
 };
 
 
-const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBaseType|string|sortItem}) => {
+const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:Field|FieldBaseType|string|sortItem}) => {
     
     if(action.type === ActionEnum.ADD) {
         const newField = action.value! as FieldBaseType;
@@ -48,14 +48,12 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:FieldBas
     }
 
     if(action.type === ActionEnum.UPDATE) {
-        console.log(action.value!);
         const newField = action.value! as Field;
         const _state = [...state];
         const currentFieldIndex = state.findIndex(item => item.id === newField.id);
 
-        console.log(currentFieldIndex);
-
-        _state[currentFieldIndex] = newField;
+        if(currentFieldIndex > -1) _state[currentFieldIndex] = newField;
+        else _state.push(newField);
 
         return _state;
     }
@@ -78,7 +76,7 @@ export const EditionContext = React.createContext<StageContextType>({
 
 const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
     const [ formTitle, setFormTitle ] = useState('Add Title');
-    const [ formId, setFormId ] = useState<number|null>(null);
+    const [ formId, setFormId ] = useState<number|null>(83);
 
     const [ fieldsList, dispatchFieldsList ] = useReducer(fieldsReducer, []);
 

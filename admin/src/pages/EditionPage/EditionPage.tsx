@@ -1,4 +1,4 @@
-import { DragEvent, MouseEvent, useContext, useState } from "react";
+import { DragEvent, MouseEvent, useContext, useEffect, useState } from "react";
 
 import Form from "../Form/Form";
 import Box from "../../components/ui/Box/Box";
@@ -6,18 +6,51 @@ import { EditionContext } from '../../store/edition-context';
 import ControllersList from '../../components/ControllersList/ControllersList';
 
 import css from './EditionPage.module.scss';
-import FieldFactory from "../../components/FieldFactory/FieldFactory";
+import FieldFactory, { FieldTypesEnum } from "../../components/FieldFactory/FieldFactory";
 import FieldEditionContainer from "../../components/FieldFactory/FieldEditionContainer";
-import Field from "../../models/Field";
+import Field, { APIFieldLoad } from "../../models/Field";
 import useApi, { RequestTypeEnum } from "../../hooks/api-hook";
 import StatusBar, { StatusBarTypeEnum } from "../../components/ui/StatusBar/StatusBar";
 
 const EditionPage = () => {
-    const editionContext = useContext(EditionContext);
     const [dragItem, setDragItem] = useState<number|null>(null);
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
     const [ status, setStatus ] = useState<StatusBarTypeEnum|null>(null);
+    const { isLoading, error, sendRequest } = useApi();
+
+    const editionContext = useContext(EditionContext);
+    const { formId } = editionContext;
+
+
+    useEffect(() => {
+        if(!formId) return;
+
+        sendRequest({url: 'http://local.woo.com/wp-json/mdf/v1/forms/' + (formId),
+        }, async (response) => {
+            const data: { 
+                isNewRecord: boolean; 
+                id:number; 
+                form_name: string; 
+                fields: APIFieldLoad[] } = await response.json();
+            
+                console.log(data);
+            
+            if(data.id) {
+                editionContext.updateFormId(data.id);
+                editionContext.updateFormTitle(data.form_name);
+
+                data.fields.map(field => {
+                    const loadedField = new Field(FieldTypesEnum.TEXT_FIELD, field.field_label, 'text');                    
+                    loadedField.load(field);
+                    editionContext.updateField(loadedField);
+                });
+
+                console.log(editionContext.fields);
+            }
+        })
+    }, [formId]);
+
 
     const dragStartHandle = (event: DragEvent<HTMLDivElement>, fieldId: string, currentPosition: number) => {
         setCurrentDragItemId(fieldId);
@@ -61,7 +94,7 @@ const EditionPage = () => {
             </FieldEditionContainer>
     );
 
-    const { isLoading, error, sendRequest } = useApi();
+    // const { isLoading, error, sendRequest } = useApi();
 
     const submitHandler = async (event:React.FormEvent) => {
         event.preventDefault();
