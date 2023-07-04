@@ -10,7 +10,7 @@ export type APIFieldLoad = {
     id: number;
     form_id: number;
     position: number;
-    field_type: number;
+    field_type: string;
     field_name: string;
     field_label: string;
     field_tip: string;
@@ -22,6 +22,7 @@ export type APIFieldLoad = {
 }
 
 type OutputType = {
+    id?: string;
     position: number;
     field_name: string;
     field_label: string;
@@ -86,11 +87,12 @@ export default class Field {
 
     public toJson() {
         const output: OutputType = {
+            id: this.id,
             position: this.position,
             field_name: this.name!,
             field_label: this._label,
             field_tip: this.tip,
-            field_type: this._htmlType.toLowerCase(),
+            field_type: this.type.toLowerCase(),
             field_validations: this._getValidations(),
             field_options: this.options.join(';')
         }
@@ -98,6 +100,8 @@ export default class Field {
         if(this._type !== FieldTypesEnum.CHECKBOX_GROUP && this._type !== FieldTypesEnum.RADIO_GROUP) {
             delete output.field_options;
         }
+
+        if(!/[\d+]/.test(this.id)) delete output.id;
 
         return output;
     }

@@ -41,7 +41,7 @@ const EditionPage = () => {
                 editionContext.updateFormTitle(data.form_name);
 
                 data.fields.map(field => {
-                    const loadedField = new Field(FieldTypesEnum.TEXT_FIELD, field.field_label, 'text');                    
+                    const loadedField = new Field(field.field_type.toUpperCase() as FieldTypesEnum, field.field_label, field.field_type);
                     loadedField.load(field);
                     editionContext.updateField(loadedField);
                 });
