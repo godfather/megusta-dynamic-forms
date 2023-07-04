@@ -76,7 +76,8 @@ const EditionPage = () => {
         editionContext.updateField(newField);
     }
 
-    const fields = editionContext.fields.map((item, i) => 
+    const fields = editionContext.fields.sort((a, b) => a.position - b.position)
+        .map((item, i) => 
         <FieldEditionContainer
             onRemove={editionContext.removeField.bind(null, item.id)}            
             onDragStart={event => dragStartHandle(event, item.id, i)}
