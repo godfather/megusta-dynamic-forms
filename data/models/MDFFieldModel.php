@@ -53,8 +53,8 @@ use MDF\Data\MDFDatabaseDefinition;
             'datetime',
             'file',
             'hidden',
-            'radiogroup',
-            'checkboxgroup'
+            'radio_group',
+            'checkbox_group'
         ];
      }
 

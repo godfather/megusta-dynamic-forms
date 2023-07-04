@@ -45,7 +45,7 @@ class MDFDatabaseDefinition {
                 id INT(11) unsigned NOT NULL AUTO_INCREMENT,
                 form_id INT(11) NOT NULL,
                 position INT(3) NOT NULL,
-                field_type INT(2) NOT NULL,
+                field_type VARCHAR(30) NOT NULL,
                 field_name VARCHAR(255) NOT NULL,
                 field_label VARCHAR(255) NOT NULL,
                 field_tip VARCHAR(255) NOT NULL,
