@@ -76,25 +76,6 @@ const EditionPage = () => {
         editionContext.updateField(newField);
     }
 
-    const fields = editionContext.fields.sort((a, b) => a.position - b.position)
-        .map((item, i) => 
-        <FieldEditionContainer
-            onRemove={editionContext.removeField.bind(null, item.id)}            
-            onDragStart={event => dragStartHandle(event, item.id, i)}
-            onDragOver={event => event.preventDefault()}
-            onDragEnter={event => dragEnterHandle(event, i)}
-            onDragLeave={dragLeaveHandle}
-            onDragEnd={dragEndHandle}
-            field={item}
-            onUpdate={updateFieldHandler}
-            key={item.id}>
-            <FieldFactory 
-                fieldType={item.type}
-                additionalProps={{ field:item }}
-                editionMode={true} />
-            </FieldEditionContainer>
-    );
-
     // const { isLoading, error, sendRequest } = useApi();
 
     const submitHandler = async (event:React.FormEvent) => {
@@ -121,11 +102,43 @@ const EditionPage = () => {
         setStatus(error ? StatusBarTypeEnum.ERROR : StatusBarTypeEnum.SUCCESS);
     };
 
+    const removeFieldHandler = (id: string) => {        
+        if(!formId) return editionContext.removeField(id);
+
+        sendRequest({ 
+            url: `http://local.woo.com/wp-json/mdf/v1/forms/${formId}/fields/${id}`,
+            method: RequestTypeEnum.DELETE
+        }, async (response) => {
+            const data: { success: boolean, id?: number } = await response.json();
+            if(data.id) editionContext.removeField(data.id.toString());
+        })
+        
+    }
 
     const closeStatusBarHandler = (event:MouseEvent<HTMLSpanElement>) => {
         event.preventDefault();
         setStatus(null);
     }
+
+    const fields = editionContext.fields.sort((a, b) => a.position - b.position)
+        .map((item, i) => 
+            <FieldEditionContainer
+                onRemove={removeFieldHandler.bind(null, item.id)}            
+                onDragStart={event => dragStartHandle(event, item.id, i)}
+                onDragOver={event => event.preventDefault()}
+                onDragEnter={event => dragEnterHandle(event, i)}
+                onDragLeave={dragLeaveHandle}
+                onDragEnd={dragEndHandle}
+                field={item}
+                onUpdate={updateFieldHandler}
+                key={item.id}>
+                <FieldFactory 
+                    fieldType={item.type}
+                    additionalProps={{ field:item }}
+                    editionMode={true} />
+                </FieldEditionContainer>
+        );
+
     
     return (
         <div className={css['edition-page']}>      

@@ -124,7 +124,7 @@
         
         if(count($fields) > 0) $success = (boolean)$fields[0]->delete();
 
-        return  rest_ensure_response(['success' => $success]);
+        return  rest_ensure_response(['success' => $success, 'id' => $request->get_param('id')]);
      }
   
 

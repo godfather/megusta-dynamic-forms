@@ -28,7 +28,7 @@ enum ActionEnum {
 
 
 const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:Field|FieldBaseType|string|sortItem}) => {
-    
+
     if(action.type === ActionEnum.ADD) {
         const newField = action.value! as FieldBaseType;
         return state.concat(new Field(newField.type, newField.label, newField.htmlType));
