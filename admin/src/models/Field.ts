@@ -6,6 +6,21 @@ export type FieldBaseType = {
     htmlType: string;
 }
 
+export type APIFieldLoad = {
+    id: number;
+    form_id: number;
+    position: number;
+    field_type: number;
+    field_name: string;
+    field_label: string;
+    field_tip: string;
+    field_validations: string;
+    field_options: string|null;
+    field_css: string|null
+    created_at: string;
+    updated_at: string;
+}
+
 type OutputType = {
     position: number;
     field_name: string;
@@ -87,6 +102,16 @@ export default class Field {
         return output;
     }
 
+    public load(field: APIFieldLoad) {
+        this._id = field.id.toString();
+        this.position = field.position;
+        this.name = field.field_name;
+        this.tip = field.field_tip;
+        
+        if(field.field_options) this.options = field.field_options.split(';');
+        if(field.field_validations) this._loadValidation(field.field_validations);
+    }
+
     private _getValidations(): string {
         const validations: string[] = [];
         if(this.required) validations.push('required');
@@ -95,6 +120,16 @@ export default class Field {
 
         const finalValidations = this._validations.concat(validations);
         return finalValidations.join(';');
+    }
+
+    private _loadValidation(validations: string) {
+        const arrValidations = validations.split(';');
+        arrValidations.forEach(val => {
+            if(val === 'required') this.required = true;
+            else if(/min/.test(val)) this.min = val.split(':')[1];
+            else if(/max/.test(val)) this.max = val.split(':')[1];
+        })
+        
     }
 
     private _initializeValidationsByFieldType():void {
