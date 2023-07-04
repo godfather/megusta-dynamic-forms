@@ -30,8 +30,8 @@ const FieldEditionContainer: React.FC<PropsWithChildren<FieldEditionContainerPro
             onDragLeave={props.onDragLeave}
             onDragEnd={props.onDragEnd}>
             <div className={css.actions}>
-                <button className={`${css.button} ${css['button-default']}`} onClick={openEditionHandler}>Edit</button>
-                <button className={`${css.button} ${css['button-danger']}`} onClick={props.onRemove}>remove</button>
+                <button type="button" className={`${css.button} ${css['button-default']}`} onClick={openEditionHandler}>Edit</button>
+                <button type="button" className={`${css.button} ${css['button-danger']}`} onClick={props.onRemove}>remove</button>
             </div>            
             { props.children }
             {editionOpen && <FieldEditionForm  onUpdate={props.onUpdate} field={props.field} onClose={closeEditionHandler} />}
