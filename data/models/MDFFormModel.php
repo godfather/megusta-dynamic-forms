@@ -28,8 +28,12 @@ use MDF\Data\MDFDatabaseDefinition;
     public function get_fields($formId = NULL, $asArray = false) {
       $formId = $formId ? $formId : $this->id;
       if($formId) {
-         $fields = new MDFFieldModel();
-         return $fields->findAll(['form_id' => '%d'], [$formId], $asArray);
+         $fieldsModel = new MDFFieldModel();
+         $fields = $fieldsModel->findAll(['form_id' => '%d'], [$formId], $asArray);
+
+         usort($fields, function($a, $b) { return $a['position'] <=> $b['position']; });
+
+         return $fields;
       }
       return [];
     }
