@@ -23,6 +23,7 @@ const EditionPage = () => {
     const { formId } = editionContext;
 
 
+    //move to a costom hook
     useEffect(() => {
         if(!formId) return;
 
@@ -102,6 +103,7 @@ const EditionPage = () => {
         setStatus(error ? StatusBarTypeEnum.ERROR : StatusBarTypeEnum.SUCCESS);
     };
 
+    //move to a costom hook
     const removeFieldHandler = (id: string) => {        
         if(!formId || /[a-zA-Z]+/.test(id)) return editionContext.removeField(id);
 
