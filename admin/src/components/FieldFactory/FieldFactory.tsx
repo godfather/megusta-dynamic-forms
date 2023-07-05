@@ -8,7 +8,7 @@ import FileField from "./Fields/FileField";
 import RadioGroup from "./Fields/RadioGroup";
 
 export enum FieldTypesEnum {
-    TEXT_FIELD = 'TEXT_FIELD',
+    TEXT_FIELD = 'TEXT',
     TEXTAREA = 'TEXTAREA',
     CHECKBOX = 'CHECKBOX',
     CHECKBOX_GROUP = 'CHECKBOX_GROUP',

@@ -50,7 +50,7 @@ export default class Field {
     ) {
         this.position = 0;
         this.options = [ 'option 1', 'option 2', 'option 3'];
-        this._id = Date.now().toString();
+        this._id = Math.random().toString(36).substring(2, 6);
         this.name = '';
         this.tip = '';
         this.min = '0';
@@ -101,7 +101,7 @@ export default class Field {
             delete output.field_options;
         }
 
-        if(!/[\d+]/.test(this.id)) delete output.id;
+        if(/[a-z]/ig.test(this.id)) delete output.id;
 
         return output;
     }

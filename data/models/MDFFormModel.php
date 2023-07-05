@@ -64,7 +64,7 @@ use MDF\Data\MDFDatabaseDefinition;
       if(empty($this->data['form_name']) || empty($this->data['id'])) throw new Exception('Form name and id cannot be empty!');
       
       $success = true;      
-      $data = ['form_name' => $this->form_name, 'updated_at' => date('Y-m-d H:i:s')];
+      $data = ['form_name' => $this->name, 'updated_at' => date('Y-m-d H:i:s')];
       $updated = $this->wpdb->update($this->tableName, $data, ['id' => $this->id], ['%s'], ['%d']);
       $success = $success && !(false === $updated);
 

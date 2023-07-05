@@ -103,7 +103,7 @@ const EditionPage = () => {
     };
 
     const removeFieldHandler = (id: string) => {        
-        if(!formId) return editionContext.removeField(id);
+        if(!formId || /[a-zA-Z]+/.test(id)) return editionContext.removeField(id);
 
         sendRequest({ 
             url: `http://local.woo.com/wp-json/mdf/v1/forms/${formId}/fields/${id}`,
