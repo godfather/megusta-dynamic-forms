@@ -12,7 +12,7 @@ import Field, { APIFieldLoad } from "../../models/Field";
 import useApi, { RequestTypeEnum } from "../../hooks/api-hook";
 import StatusBar, { StatusBarTypeEnum } from "../../components/ui/StatusBar/StatusBar";
 
-const EditionPage = () => {
+const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const [dragItem, setDragItem] = useState<number|null>(null);
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
@@ -20,8 +20,14 @@ const EditionPage = () => {
     const { isLoading, error, sendRequest } = useApi();
 
     const editionContext = useContext(EditionContext);
-    const { formId } = editionContext;
 
+    
+    useEffect(() => {
+        if(props.id) editionContext.updateFormId(parseInt(props.id));
+    }, []);
+
+
+    const { formId } = editionContext;
 
     //move to a costom hook
     useEffect(() => {
@@ -35,7 +41,6 @@ const EditionPage = () => {
                 form_name: string; 
                 fields: APIFieldLoad[] } = await response.json();
             
-                console.log(data);
             
             if(data.id) {
                 editionContext.updateFormId(data.id);

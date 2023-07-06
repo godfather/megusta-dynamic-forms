@@ -20,7 +20,7 @@ textarea {
 
         &--checkbox, 
         &--radio {
-            width: initial;
+            width: initial !important;
             margin-right: 10px;
             padding: 10px !important;
             border-radius: 6px;

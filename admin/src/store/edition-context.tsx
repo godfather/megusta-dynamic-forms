@@ -76,7 +76,7 @@ export const EditionContext = React.createContext<StageContextType>({
 
 const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
     const [ formTitle, setFormTitle ] = useState('Add Title');
-    const [ formId, setFormId ] = useState<number|null>(2);
+    const [ formId, setFormId ] = useState<number|null>(null);
 
     const [ fieldsList, dispatchFieldsList ] = useReducer(fieldsReducer, []);
 
@@ -96,7 +96,7 @@ const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
         }});
     }
 
-    const updateFieldHandler = (field:Field) => {
+    const updateFieldHandler = (field:Field, reset?:boolean) => {
         dispatchFieldsList({ type: ActionEnum.UPDATE, value:field });
     }
 

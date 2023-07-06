@@ -1,12 +1,13 @@
 import css from './App.module.scss';
-import EditionPage from './pages/EditionPage/EditionPage';
 import EditionContextProvider from './store/edition-context';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes/routes';
 
 function App() {
   return (
     <EditionContextProvider>
       <div className={css.app}>
-        <EditionPage />
+        <RouterProvider router={router} />
       </div>
     </EditionContextProvider>
   );
