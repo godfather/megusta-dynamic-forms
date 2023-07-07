@@ -20,20 +20,13 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const { isLoading, error, sendRequest } = useApi();
 
     const editionContext = useContext(EditionContext);
-
+    const formId = props.id;
     
     useEffect(() => {
-        if(props.id) editionContext.updateFormId(parseInt(props.id));
-    }, []);
+        if(!formId) return editionContext.reset();
 
-
-    const { formId } = editionContext;
-
-    //move to a costom hook
-    useEffect(() => {
-        if(!formId) return;
-
-        sendRequest({url: 'http://local.woo.com/wp-json/mdf/v1/forms/' + (formId),
+        editionContext.updateFormId(parseInt(formId));
+        sendRequest({url: 'http://local.woo.com/wp-json/mdf/v1/forms/' + formId,
         }, async (response) => {
             const data: { 
                 isNewRecord: boolean; 
@@ -43,7 +36,7 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
             
             
             if(data.id) {
-                editionContext.updateFormId(data.id);
+                // editionContext.updateFormId(data.id);
                 editionContext.updateFormTitle(data.form_name);
 
                 data.fields.map(field => {
@@ -56,7 +49,6 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
             }
         })
     }, [formId]);
-
 
     const dragStartHandle = (event: DragEvent<HTMLDivElement>, fieldId: string, currentPosition: number) => {
         setCurrentDragItemId(fieldId);
@@ -110,10 +102,10 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
 
     //move to a costom hook
     const removeFieldHandler = (id: string) => {        
-        if(!formId || /[a-zA-Z]+/.test(id)) return editionContext.removeField(id);
+        if(!editionContext.formId || /[a-zA-Z]+/.test(id)) return editionContext.removeField(id);
 
         sendRequest({ 
-            url: `http://local.woo.com/wp-json/mdf/v1/forms/${formId}/fields/${id}`,
+            url: `http://local.woo.com/wp-json/mdf/v1/forms/${editionContext.formId}/fields/${id}`,
             method: RequestTypeEnum.DELETE
         }, async (response) => {
             const data: { success: boolean, id?: number } = await response.json();

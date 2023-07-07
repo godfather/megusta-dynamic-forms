@@ -11,6 +11,7 @@ type StageContextType = {
     sortFields: (field:string, currentPosition:number, newPosition:number) => void;
     updateFormTitle:(title:string) => void;
     updateFormId:(id:number) => void;
+    reset:() => void;
 }
 
 type sortItem = {
@@ -23,7 +24,8 @@ enum ActionEnum {
     ADD = 'ADD',
     UPDATE = 'UPDATE',
     REMOVE = 'REMOVE',
-    SORT = 'SORT'
+    SORT = 'SORT',
+    RESET = 'RESET'
 };
 
 
@@ -36,6 +38,10 @@ const fieldsReducer = (state:Field[], action: { type:ActionEnum, value?:Field|Fi
 
     if(action.type === ActionEnum.REMOVE) {
         return state.filter(item => item.id !== action.value);
+    }
+
+    if(action.type === ActionEnum.RESET) {
+        return [];
     }
 
     if(action.type === ActionEnum.SORT) {
@@ -71,7 +77,8 @@ export const EditionContext = React.createContext<StageContextType>({
     removeField: () => {},
     sortFields: (field:string, currentPosition:number, newPosition:number) => {},
     updateFormTitle: (title:string) => {},
-    updateFormId: (id:number) => {} 
+    updateFormId: (id:number) => {},
+    reset: () => {},
 });
 
 const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
@@ -80,15 +87,15 @@ const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
 
     const [ fieldsList, dispatchFieldsList ] = useReducer(fieldsReducer, []);
 
-    const addFieldHandler = (fieldType: FieldBaseType) => {
+    const addFieldHandler = (fieldType: FieldBaseType): void => {
         dispatchFieldsList({ type: ActionEnum.ADD, value: fieldType });
     }
 
-    const removeFieldHandler = (fieldId:string) => {
+    const removeFieldHandler = (fieldId:string): void => {
         dispatchFieldsList({ type: ActionEnum.REMOVE, value: fieldId });
     }
 
-    const sortFieldsHandler = (field:string, currentPosition:number, newPosition:number) => {
+    const sortFieldsHandler = (field:string, currentPosition:number, newPosition:number): void => {
         dispatchFieldsList({ type:ActionEnum.SORT, value:{ 
             fieldId:field, 
             currentPosition, 
@@ -96,16 +103,23 @@ const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
         }});
     }
 
-    const updateFieldHandler = (field:Field, reset?:boolean) => {
+    const updateFieldHandler = (field:Field, reset?:boolean): void => {
         dispatchFieldsList({ type: ActionEnum.UPDATE, value:field });
     }
 
-    const updateFormTitleHandler = (title: string) => {
+    const updateFormTitleHandler = (title: string): void => {
         setFormTitle(title);
     }
 
-    const updateFormIdHandler = (id: number) => {
-        setFormId(id);
+    const updateFormIdHandler = (id: number): void => {
+        setFormId(lastId => id );
+        dispatchFieldsList({ type: ActionEnum.RESET })
+    }
+
+    const resetHandler = (): void => {
+        dispatchFieldsList({ type: ActionEnum.RESET });
+        setFormId(null);
+        setFormTitle('');
     }
 
     const contextValues: StageContextType = {
@@ -118,6 +132,7 @@ const EditionContextProvider: React.FC<PropsWithChildren> = (props) => {
         sortFields: sortFieldsHandler,
         updateFormTitle: updateFormTitleHandler,
         updateFormId: updateFormIdHandler,
+        reset: resetHandler,
     };
 
     return (
