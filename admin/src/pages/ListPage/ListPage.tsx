@@ -3,6 +3,7 @@ import { basePath } from "../../routes/routes";
 import { useEffect, useState } from "react";
 import useApi from "../../hooks/api-hook";
 import Table from "../../components/ui/Table/Table";
+import Box from "../../components/ui/Box/Box";
 
 type FormType = {
     id: number;
@@ -30,9 +31,9 @@ const ListPage = () => {
 
 
     return (
-        <>
+        <Box title="forms">
             <Table headers={headers} rows={rows} />            
-        </>
+        </Box>
     );
 }
 

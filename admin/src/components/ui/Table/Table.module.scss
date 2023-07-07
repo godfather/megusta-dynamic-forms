@@ -1,0 +1,60 @@
+@import '../../../scss/variables';
+
+.mdftable {
+    width: 100%;
+    border-radius: $border-radius;
+    overflow: hidden;
+    border-collapse:separate;
+
+
+    th {
+        background-color: $color-disabled;
+        text-align: left;
+        padding: 10px;
+        text-transform: uppercase;
+    }
+
+    tbody {
+        tr {
+            &:nth-child(even) {
+                background-color: $bg-button;
+            }
+
+            &:hover {
+                background-color: $color-border-active-alpha;
+            }
+        }
+
+        td {
+            padding: 10px;
+
+            &:first-child,
+            &:last-child {
+                width: 1%;
+                white-space: nowrap;
+            }
+
+            button {
+                width: 30px;
+                height: 30px;
+                margin-left: 5px;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+
+                &.edit {
+                    background-color: $color-success;
+                }
+
+                &.delete {
+                    color: $color-primary-light;
+                    background-color: $color-danger;
+                }
+
+                &.data {
+                    background-color: $color-warning;
+                }
+            }
+        }
+    }
+}

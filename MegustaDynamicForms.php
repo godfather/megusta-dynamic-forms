@@ -34,7 +34,7 @@ class MegustaDynamicForms {
     }
 
     public static function createAdminMenus() {
-        add_menu_page(__('Megusta Dynamic Forms'), __('Megusta Dynamic Forms'),'manage_options', "mdf-list", [static::class, 'megustaRootHtml'], 'dashicons-text', 30);
+        add_menu_page(__('Megusta Dynamic Forms'), __('Megusta Dynamic Forms'),'manage_options', "mdf", [static::class, 'megustaRootHtml'], 'dashicons-text', 30);
         // add_submenu_page('mdf-list',__('Megusta Dynamic Forms'), __('All entries'), 'manage_options', 'mdf-list', ['MegustaDynamicForms', 'megustaRootHtml']);
         // add_submenu_page('mdf-list',__('Add new entry'), __('Add new entry'), 'manage_options', 'mdf-create', ['MegustaDynamicForms', 'megustaRootHtml']);
     }
@@ -54,6 +54,7 @@ class MegustaDynamicForms {
 
         wp_enqueue_style('megusta_dynamic_forms_css', $cssLoadStyles);
         wp_enqueue_script('megusta_dynamic_forms_js', $jsLoadScript, '', mt_rand(10,1000), true);
+        wp_enqueue_script('megusta_dynamic_forms_js_icons', 'https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js', '', mt_rand(10,1000), true);
     }
 
 
