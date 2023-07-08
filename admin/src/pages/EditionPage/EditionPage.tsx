@@ -11,6 +11,7 @@ import FieldEditionContainer from "../../components/FieldFactory/FieldEditionCon
 import Field, { APIFieldLoad } from "../../models/Field";
 import useApi, { RequestTypeEnum } from "../../hooks/api-hook";
 import StatusBar, { StatusBarTypeEnum } from "../../components/ui/StatusBar/StatusBar";
+import { useNavigate } from "react-router-dom";
 
 const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const [dragItem, setDragItem] = useState<number|null>(null);
@@ -18,6 +19,7 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
     const [ status, setStatus ] = useState<StatusBarTypeEnum|null>(null);
     const { isLoading, error, sendRequest } = useApi();
+    const navigate = useNavigate();
 
     const editionContext = useContext(EditionContext);
     const formId = props.id;
@@ -36,7 +38,6 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
             
             
             if(data.id) {
-                // editionContext.updateFormId(data.id);
                 editionContext.updateFormTitle(data.form_name);
 
                 data.fields.map(field => {
@@ -74,8 +75,6 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
         editionContext.updateField(newField);
     }
 
-    // const { isLoading, error, sendRequest } = useApi();
-
     const submitHandler = async (event:React.FormEvent) => {
         event.preventDefault();
 
@@ -94,7 +93,7 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
         }, async (response) => {
             const data: {success: boolean; id?: number}  = await response.json();
             console.log(data);
-            if(!editionContext.formId && data.id) editionContext.updateFormId(data.id);
+            if(!editionContext.formId && data.id) navigate(`?page=mdf&action=edit&formid=${data.id}`);
         })
 
         setStatus(error ? StatusBarTypeEnum.ERROR : StatusBarTypeEnum.SUCCESS);
