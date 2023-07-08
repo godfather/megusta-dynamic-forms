@@ -9,7 +9,7 @@ import css from './EditionPage.module.scss';
 import FieldFactory, { FieldTypesEnum } from "../../components/FieldFactory/FieldFactory";
 import FieldEditionContainer from "../../components/FieldFactory/FieldEditionContainer";
 import Field, { APIFieldLoad } from "../../models/Field";
-import useApi, { RequestTypeEnum } from "../../hooks/api-hook";
+import useHttp, { RequestTypeEnum } from "../../hooks/http-hook";
 import StatusBar, { StatusBarTypeEnum } from "../../components/ui/StatusBar/StatusBar";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
     const [ status, setStatus ] = useState<StatusBarTypeEnum|null>(null);
-    const { isLoading, error, sendRequest } = useApi();
+    const { isLoading, error, sendRequest } = useHttp();
     const navigate = useNavigate();
 
     const editionContext = useContext(EditionContext);

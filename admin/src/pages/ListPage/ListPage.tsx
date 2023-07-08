@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { basePath } from "../../routes/routes";
 import { useEffect, useState } from "react";
-import useApi from "../../hooks/api-hook";
+import useHttp from "../../hooks/http-hook";
 import Table from "../../components/ui/Table/Table";
 import Box from "../../components/ui/Box/Box";
 
@@ -15,7 +15,7 @@ type FormType = {
 const ListPage = () => {
     const [ headers, setHeaders ] = useState<string[]>([]);
     const [ rows, setRows ] = useState<(string|number|boolean)[][]>([]);
-    const { isLoading, error, sendRequest } = useApi();
+    const { isLoading, error, sendRequest } = useHttp();
 
     useEffect(() => {
         sendRequest({ url: 'http://local.woo.com/wp-json/mdf/v1/forms/' }, async (response) => {
