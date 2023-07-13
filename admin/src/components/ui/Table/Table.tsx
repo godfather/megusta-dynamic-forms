@@ -10,6 +10,7 @@ type TableCol = {
 type TableProps = {
     headers: string[];
     rows: (string|number|boolean)[][];
+    onDelete: (formId: string) => void;
 }
 
 
@@ -19,28 +20,28 @@ const Table: React.FC<TableProps> = (props) => {
             <thead>
                 <tr>{ props.headers.concat('actions').map((header, i) => <th key={i}>{header}</th>) }</tr>
             </thead>
-            <tbody>{ props.rows.map(row => <TableRow row={row} />)}</tbody>
+            <tbody>{ props.rows.map(row => <TableRow row={row} onDelete={props.onDelete} />)}</tbody>
         </table>
     )
 }
 
-const TableRow: React.FC<{ row: (string|number|boolean)[]; }> = (props) => {
+const TableRow: React.FC<{ row: (string|number|boolean)[]; onDelete: (formId: string) => void }> = (props) => {
     return (
         <tr>
             { props.row.map((val, i) => <td key={i}>{val}</td>) }
-            <TableActions formId={props.row[0]} />
+            <TableActions formId={props.row[0]} onDelete={props.onDelete} />
         </tr>
     );
 }
 
-const TableActions: React.FC<{ formId:string|number|boolean }> = (props) => {
+const TableActions: React.FC<{ formId:string|number|boolean; onDelete: (formId: string) => void }> = (props) => {
     const navigate = useNavigate();
 
     const openEditionHandler = (): void => { 
         navigate(`?page=mdf&action=edit&formid=${props.formId}`);
     }
 
-    const deleteHandler = () => console.log(`Deleting ${props.formId}...`)
+    const deleteHandler = () => props.onDelete(props.formId as string);
     const viewDataHandler = () => console.log(`Open data from ${props.formId}...`);
 
     return(

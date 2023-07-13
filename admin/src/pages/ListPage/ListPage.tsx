@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
-import { basePath } from "../../routes/routes";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useApi from "../../hooks/api-hook";
 import Table from "../../components/ui/Table/Table";
 import Box from "../../components/ui/Box/Box";
@@ -34,7 +32,7 @@ export type ResponseBoolean = {
 const ListPage = () => {
     const [ headers, setHeaders ] = useState<string[]>([]);
     const [ rows, setRows ] = useState<(string|number|boolean)[][]>([]);
-    const { isLoading, error, setError, list } = useApi();
+    const { isLoading, error, setError, list, destroy } = useApi();
 
     useEffect(() => {
         list().then(response => {
@@ -44,11 +42,18 @@ const ListPage = () => {
         }).catch(error => setError(error.message));
     }, []);
 
+    const onDeleteHandler = (formId:string): void => {
+        destroy(formId).then(data => {
+            if(!data.success) return; //throw an error;
+            setRows(lastState => lastState.filter(r => r[0] !== formId));
+        });
+    }
+
 
     return (
         <Box title="forms">
             { error && <p>{error}</p> }
-            <Table headers={headers} rows={rows} />            
+            <Table headers={headers} rows={rows} onDelete={onDeleteHandler} />            
         </Box>
     );
 }
