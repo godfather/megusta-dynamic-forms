@@ -41,7 +41,10 @@ const TableActions: React.FC<{ formId:string|number|boolean; onDelete: (formId: 
         navigate(`?page=mdf&action=edit&formid=${props.formId}`);
     }
 
-    const deleteHandler = () => props.onDelete(props.formId as string);
+    const deleteHandler = () => { 
+        const confirmDeletion = window.confirm('Are yousure about this?');
+        if(confirmDeletion) props.onDelete(props.formId as string);
+    }
     const viewDataHandler = () => console.log(`Open data from ${props.formId}...`);
 
     return(
