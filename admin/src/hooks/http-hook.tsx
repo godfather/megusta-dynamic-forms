@@ -6,14 +6,14 @@ export enum RequestTypeEnum {
     DELETE = 'DELETE'
 };
 
-type RequestConfig = {
+export type RequestConfig = {
     url: string;
     method?: RequestTypeEnum;
     headers?: {};
     body?: any;
 }
 
-const useApi = () => {
+const useHttp = () => {
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ error, setError ] = useState<string|null>(null);
 
@@ -36,11 +36,28 @@ const useApi = () => {
         })
     }
 
+    const req = <T,>(requestConfig: RequestConfig): Promise<T> => {
+        setIsLoading(true);
+        setError(null);
+
+        return fetch(requestConfig.url, {
+            method: requestConfig.method || RequestTypeEnum.GET,
+            headers: requestConfig.headers || {},
+            body: requestConfig.body ? JSON.stringify(requestConfig.body) : null
+        }).then(response => {
+            if(!response.ok) throw Error('Request failed!');
+            setIsLoading(false);
+            return response.json();
+        }).then(data => data as T);
+    }
+
     return {
         isLoading,
         error,
-        sendRequest
+        setError,
+        sendRequest,
+        req
     }
 }
 
-export default useApi;
+export default useHttp;

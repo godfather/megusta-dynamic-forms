@@ -12,13 +12,15 @@ import Field, { APIFieldLoad } from "../../models/Field";
 import useHttp, { RequestTypeEnum } from "../../hooks/http-hook";
 import StatusBar, { StatusBarTypeEnum } from "../../components/ui/StatusBar/StatusBar";
 import { useNavigate } from "react-router-dom";
+import useApi from "../../hooks/api-hook";
 
 const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const [dragItem, setDragItem] = useState<number|null>(null);
     const [dragOverItem, setDragOverItem] = useState<number|null>(null);
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
     const [ status, setStatus ] = useState<StatusBarTypeEnum|null>(null);
-    const { isLoading, error, sendRequest } = useHttp();
+    const { sendRequest } = useHttp();
+    const { isLoading, error, load, send, deleteField } = useApi();
     const navigate = useNavigate();
 
     const editionContext = useContext(EditionContext);
@@ -26,29 +28,19 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
     
     useEffect(() => {
         if(!formId) return editionContext.reset();
-
         editionContext.updateFormId(parseInt(formId));
-        sendRequest({url: 'http://local.woo.com/wp-json/mdf/v1/forms/' + formId,
-        }, async (response) => {
-            const data: { 
-                isNewRecord: boolean; 
-                id:number; 
-                form_name: string; 
-                fields: APIFieldLoad[] } = await response.json();
-            
-            
-            if(data.id) {
-                editionContext.updateFormTitle(data.form_name);
+        
+        load(formId).then(data => {
+            if(!data.id) return;
+            editionContext.updateFormTitle(data.form_name);
 
-                data.fields.map(field => {
-                    const loadedField = new Field(field.field_type.toUpperCase() as FieldTypesEnum, field.field_label, field.field_type);
-                    loadedField.load(field);
-                    editionContext.updateField(loadedField);
-                });
+            data.fields!.map(field => {
+                const loadedField = new Field(field.field_type.toUpperCase() as FieldTypesEnum, field.field_label, field.field_type);
+                loadedField.load(field);
+                editionContext.updateField(loadedField);
+            });
+        });
 
-                console.log(editionContext.fields);
-            }
-        })
     }, [formId]);
 
     const dragStartHandle = (event: DragEvent<HTMLDivElement>, fieldId: string, currentPosition: number) => {
@@ -83,34 +75,19 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
             fields: editionContext.fields.map(field => field.toJson())
         };
 
-        console.log('submitHandler');
-
-        sendRequest({
-            url: 'http://local.woo.com/wp-json/mdf/v1/forms/' + (editionContext.formId || ''),
-            body: bodyData,
-            method: RequestTypeEnum.POST,
-            headers: { 'Content-Type': 'application/json'}
-        }, async (response) => {
-            const data: {success: boolean; id?: number}  = await response.json();
-            console.log(data);
+        send(editionContext.formId, bodyData).then( data => {
             if(!editionContext.formId && data.id) navigate(`?page=mdf&action=edit&formid=${data.id}`);
         })
 
         setStatus(error ? StatusBarTypeEnum.ERROR : StatusBarTypeEnum.SUCCESS);
     };
 
-    //move to a costom hook
     const removeFieldHandler = (id: string) => {        
         if(!editionContext.formId || /[a-zA-Z]+/.test(id)) return editionContext.removeField(id);
 
-        sendRequest({ 
-            url: `http://local.woo.com/wp-json/mdf/v1/forms/${editionContext.formId}/fields/${id}`,
-            method: RequestTypeEnum.DELETE
-        }, async (response) => {
-            const data: { success: boolean, id?: number } = await response.json();
+        deleteField(editionContext.formId, id).then(data => {
             if(data.id) editionContext.removeField(data.id.toString());
-        })
-        
+        });
     }
 
     const closeStatusBarHandler = (event:MouseEvent<HTMLSpanElement>) => {

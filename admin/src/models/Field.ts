@@ -21,7 +21,7 @@ export type APIFieldLoad = {
     updated_at: string;
 }
 
-type OutputType = {
+export type OutputType = {
     id?: string;
     position: number;
     field_name: string;
