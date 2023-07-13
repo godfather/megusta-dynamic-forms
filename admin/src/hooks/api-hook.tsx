@@ -25,9 +25,9 @@ const useApi = () => {
         body: body
     });
 
-    const deleteField = (formId:string|number, fieldId:string|number): Promise<ResponseBoolean> => req({
-        url:mountUrl(`${formId.toString()}/fields/${fieldId}`),
-        method:RequestTypeEnum.DELETE,
+    const destroy = (formId:string|number, fieldId?:string|number): Promise<ResponseBoolean> => req({
+        url: fieldId ? mountUrl(`${formId.toString()}/fields/${fieldId}`) : mountUrl(formId.toString()),
+        method:RequestTypeEnum.DELETE
     });
 
     return {
@@ -37,7 +37,7 @@ const useApi = () => {
         list,
         load,
         send,
-        deleteField
+        destroy
     }
 }
 

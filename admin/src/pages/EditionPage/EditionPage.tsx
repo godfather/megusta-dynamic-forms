@@ -20,7 +20,7 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const [ currentDragItemId, setCurrentDragItemId ] = useState<string|null>(null)
     const [ status, setStatus ] = useState<StatusBarTypeEnum|null>(null);
     const { sendRequest } = useHttp();
-    const { isLoading, error, load, send, deleteField } = useApi();
+    const { isLoading, error, load, send, destroy } = useApi();
     const navigate = useNavigate();
 
     const editionContext = useContext(EditionContext);
@@ -85,7 +85,7 @@ const EditionPage: React.FC<{ id:string|null }> = (props) => {
     const removeFieldHandler = (id: string) => {        
         if(!editionContext.formId || /[a-zA-Z]+/.test(id)) return editionContext.removeField(id);
 
-        deleteField(editionContext.formId, id).then(data => {
+        destroy(editionContext.formId, id).then(data => {
             if(data.id) editionContext.removeField(data.id.toString());
         });
     }
