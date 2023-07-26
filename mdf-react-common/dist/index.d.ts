@@ -1,6 +1,3 @@
-/// <reference types="react" />
-import * as react from 'react';
-
 declare enum RequestTypeEnum {
     GET = "GET",
     POST = "POST",
@@ -75,7 +72,6 @@ declare enum FieldTypesEnum {
 declare const useMDFApi: () => {
     isLoading: boolean;
     error: string | null;
-    setError: react.Dispatch<react.SetStateAction<string | null>>;
     list: () => Promise<FormType[]>;
     load: (id: string) => Promise<FormWithFieldsType>;
     send: (id: string | number | null, body: FormSendType) => Promise<ResponseBoolean>;

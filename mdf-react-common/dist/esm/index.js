@@ -2814,7 +2814,7 @@ var FieldTypesEnum;
 const mountUrl = (uri) => {
     const BASE_PATH = '/wp-json/mdf/v1/forms/';
     let url = '';
-    if (process.env.NODE_ENV !== 'development')
+    if (process.env.NODE_ENV === 'development')
         url = BASE_PATH;
     else
         url = `//${window.location.hostname}${BASE_PATH}`;
@@ -2852,7 +2852,7 @@ const useMDFApi = () => {
     return {
         isLoading,
         error,
-        setError,
+        //    setError,
         list,
         load,
         send,

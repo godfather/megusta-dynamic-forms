@@ -12,7 +12,7 @@ const mountUrl = (uri: string|null): string => {
     const BASE_PATH = '/wp-json/mdf/v1/forms/';
     let url = '';
 
-    if(process.env.NODE_ENV !== 'development') url = BASE_PATH;
+    if(process.env.NODE_ENV === 'development') url = BASE_PATH;
     else url = `//${window.location.hostname}${BASE_PATH}`;
 
     return uri ? url+uri : url;
@@ -56,7 +56,7 @@ const useMDFApi = () => {
     return {
        isLoading, 
        error,
-       setError,
+    //    setError,
        list,
        load,
        send,
