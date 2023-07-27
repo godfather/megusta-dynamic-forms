@@ -46,7 +46,9 @@ const useMDFApi = () => {
             method: requestConfig.method || RequestTypeEnum.GET,
             headers: requestConfig.headers || {},
             body: requestConfig.body ? JSON.stringify(requestConfig.body) : null
+        
         }).then(response => {
+            console.log(response);
             if(!response.ok) throw Error('Request failed!');
             setIsLoading(false);
             return response.json();
