@@ -9,7 +9,7 @@ const Checkbox: React.FC<{ field:APIFieldLoad, value?:string, htmlId: string }> 
             <input
                 id={htmlId}
                 type="checkbox" 
-                name={field.field_label}
+                name={field.field_name}
                 value={value} />
             {label}
         </label>
