@@ -1,13 +1,12 @@
 import { APIFieldLoad } from "../../../types";
+import FieldContainer from "./FieldContainer";
 
-const TextArea: React.FC<{ field: APIFieldLoad }> = ({ field }) => {
-    const htmlId = `${field.form_id}-${field.field_name}`;
-
+const TextArea: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, htmlId }) => {
     return (
-        <div className='field-container'>
+        <FieldContainer>
             <label htmlFor={htmlId}>{ field.field_label }</label>
             <textarea name={field.field_name} />
-        </div>
+        </FieldContainer>
     )
 }
 

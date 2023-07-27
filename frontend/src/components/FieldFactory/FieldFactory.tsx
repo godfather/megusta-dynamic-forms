@@ -9,7 +9,7 @@ const FieldFactory: React.FC<{ field:APIFieldLoad }> = ({ field }) => {
 
     let compField = <TextField field={field} htmlId={htmlId} />
 
-    if(type === FieldTypesEnum.TEXTAREA) compField = <TextArea field={field} />;
+    if(type === FieldTypesEnum.TEXTAREA) compField = <TextArea field={field} htmlId={htmlId} />;
     if(type === FieldTypesEnum.CHECKBOX_GROUP) compField = <CheckboxGroup field={field} htmlId={htmlId} />;
 
     return compField;
