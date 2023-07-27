@@ -10,10 +10,10 @@ import {
 
 const mountUrl = (uri: string|null): string => {
     const BASE_PATH = '/wp-json/mdf/v1/forms/';
-    let url = '';
+    let url = `//local.woo.com${BASE_PATH}`;
 
-    if(process.env.NODE_ENV === 'development') url = BASE_PATH;
-    else url = `//${window.location.hostname}${BASE_PATH}`;
+    // if(process.env.NODE_ENV !== 'development') url = BASE_PATH;
+    // else url = `//${window.location.hostname}${BASE_PATH}`;
 
     return uri ? url+uri : url;
 }
