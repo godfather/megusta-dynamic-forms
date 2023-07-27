@@ -3,6 +3,7 @@ import { useMDFApi } from "../../hooks"
 import { APIFieldLoad } from "../../types"
 import FieldFactory from "../FieldFactory/FieldFactory"
 import StatusBar, { StatusBarTypeEnum } from "../UI/StatusBar/StatusBar"
+import FieldContainer from "../FieldFactory/Fields/FieldContainer"
 
 const Form: React.FC<{ formId:string}> = ({ formId }) => {
     const { isLoading, error, setError, load, req } = useMDFApi()
@@ -20,10 +21,13 @@ const Form: React.FC<{ formId:string}> = ({ formId }) => {
     }, [formId]);
 
     return (
-        <div>
+        <form>
             { error && <StatusBar type={StatusBarTypeEnum.ERROR} message={error} onClick={closeStatusBarHandler}/>}
             {fields.length > 0 && fields.map(field => <FieldFactory key={field.id} field={field} />) }
-        </div>
+            <FieldContainer>
+                <button type="button">send</button>
+            </FieldContainer>
+        </form>
     )
 }
 
