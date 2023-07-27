@@ -1,7 +1,7 @@
 import { APIFieldLoad } from "../../../types";
 
-const TextField: React.FC<{ field: APIFieldLoad }> = ({ field }) => {
-    const htmlId = `${field.form_id}-${field.field_name}`;
+const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, htmlId }) => {
+    
 
     return (
         <div className='field-container'>
