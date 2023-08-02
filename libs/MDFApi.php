@@ -18,12 +18,15 @@
  use \WP_REST_Request;
  use MDF\Data\Models\MDFFormModel;
  use MDF\Data\Models\MDFFieldModel;
+ use MDF\Data\Models\MDFRegistrationModel;
+ use MDF\Data\Models\MDFRegistrationValuesModel;
 
  class MDFApi extends WP_REST_Controller {
     const API_NAMESPACE = 'mdf';
     const API_VERSION = 'v1';
     const NAMESPACE = self::API_NAMESPACE . '/' . self::API_VERSION;
     const ENDPOINT = 'forms';
+    const FRONTEND_ENDPOINT = 'register';
 
     private $_schema;
 
@@ -75,13 +78,32 @@
             'permission_callback' => $this->getPermission(),
             'schema' => MDFFieldModel::getSchema(),
          ]);
-   
+
+         register_rest_route(self::NAMESPACE, self::FRONTEND_ENDPOINT, [[ 
+            'methods' => WP_REST_Server::CREATABLE, 
+            'callback' => [$this, 'register'],
+            'permission_callback' => $this->getPermission(),
+            'args' => MDFRegistrationModel::getArgs(),
+         ],
+            'schema' => [$this, 'schema'],
+         ],             
+      );
+    }
+
+    public function schema() {
+      return MDFRegistrationModel::getSchema();
     }
 
     public function createForm($request = []) {
         $formModel = new MDFFormModel();
         $formModel->setParams($request->get_params());
         return  rest_ensure_response($formModel->save());
+    }
+
+    public function register($request = []) {
+        $regModel = new MDFRegistrationModel();
+        $regModel->setParams($request->get_params());
+        return  rest_ensure_response($regModel->save());
     }
 
 
