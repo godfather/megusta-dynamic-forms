@@ -122,7 +122,7 @@ abstract class MDFActiveRecord {
         $query = "SELECT COUNT(*) FROM {$this->tableName}";        
         if(!empty($options)) {
             $query .= self::prepareOptions($options);
-            return $this->wpdb->get_var($query, $values);
+            return $this->wpdb->get_var($query);
         }
         
         return $this->wpdb->get_var($query);
