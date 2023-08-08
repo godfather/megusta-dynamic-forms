@@ -97,6 +97,10 @@ use MDF\Data\MDFDatabaseDefinition;
       return $success;
     }
 
+    public function exists($id) {
+      return ($this->count([ 'id' => $id ]) > 0);
+    }
+
     public static function getSchema() : array {
         return [
             '$schema' => 'http://json-schema.org/draft-04/schema#',

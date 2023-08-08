@@ -15,22 +15,49 @@ use \Exception;
 use \WP_REST_Response;
 use MDF\Libs\MDFActiveRecord;
 use MDF\Data\MDFDatabaseDefinition;
+use MDF\Data\Models\MDFFormModel;
 use MDF\Data\Models\MDFRegistrationValuesModel;
+use MDF\Libs\Validations\MDFValidationException;
+use MDF\Libs\Validations\MDFValidationExceptionType;
 
  class MDFRegistrationModel extends MDFActiveRecord {
+    private $_errors;
+
     public function __construct() {
         parent::__construct();
         $this->tableName = MDFDatabaseDefinition::getTableName('form_registrations');
+        $this->_errors = [];
     }
     
     public function save($format = []) {
         unset($this->data['isNewrecord']);
         $this->uuid = wp_generate_uuid4();
-        
-        if(!isset($this->data['fields']) || !is_array($this->fields) || count($this->fields) <= 0) {
-            return new WP_REST_Response(array('error' => 'Can\'t process your request'), 422);
+
+        $formModel = new MDFFormModel();
+
+        try {
+            if(!isset($this->data['fields']) || !is_array($this->fields) || count($this->fields) <= 0) {
+                throw new MDFValidationException(
+                    new MDFValidationExceptionType('Can\'t process your request'));
+            }
+
+            if(!$formModel->exists($this->data['form_id'])) {
+                throw new MDFValidationException(
+                    new MDFValidationExceptionType('Invalid form.'));
+            }
+
+            foreach($this->fields as $k => $field) {
+                $this->validateFieldValues($field['field_id'], $field['field_value']);
+            }            
+
+        } catch(MDFValidationException $e) {
+            array_push($this->_errors, $e->getDecodedMessage());
         }
         
+        if(count($this->_errors) > 0) {
+            return new WP_REST_Response($this->_errors, 422);
+        }
+
         $regData = [
             'form_id' => $this->form_id,
             'uuid' => $this->uuid
@@ -53,6 +80,16 @@ use MDF\Data\Models\MDFRegistrationValuesModel;
         $regModel = new MDFRegistrationValuesModel();
         $regModel->setParams($regData, false);
         return (!isset($regData['id']) ? $regModel->save() : $regModel->update());
+    }
+
+    protected function validateFieldValues($fieldId, $fieldValue) {
+        $validationResult = MDFRegistrationValuesModel::validate($fieldId, $fieldValue);
+        if(!$validationResult['valid']) {
+            array_push($this->_errors, array_merge(['field_id' => $fieldId], $validationResult));
+            return false;
+        }
+
+        return true;
     }
 
     public function update($format = []) {

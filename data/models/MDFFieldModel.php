@@ -40,6 +40,24 @@ use MDF\Data\MDFDatabaseDefinition;
         $success = parent::delete($id);  
         return $success;
     }
+    
+    public function exists($id) {
+        return $this->count(['id' => $id]) > 0;
+    }
+
+    public function getValidationRules() {
+        if(isset($this->data['field_validations']) && !empty($this->data['field_validations'])) {
+            return array_merge(...array_map(function($item) {
+                if(preg_match('/:/', $item)) {
+                    $currentItem = explode(':', $item);
+                    return [$currentItem[0] => $currentItem[1]];
+                }
+                return [$item => true];
+            }, explode(';', $this->field_validations)));
+        }
+
+        return [];
+    }
 
     public static function getFieldTypes() {
         return [
@@ -101,7 +119,7 @@ use MDF\Data\MDFDatabaseDefinition;
                     'readonly' => false
                ],
                'field_validations' => [
-                    'description' => __('A coma separated string to identify the field validations'),
+                    'description' => __('A semicolumn separated string to identify the field validations'),
                     'type' => 'string',
                     'context' => ['view', 'edit'],
                     'readonly' => false
