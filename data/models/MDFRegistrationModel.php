@@ -99,21 +99,6 @@ use MDF\Libs\Validations\MDFValidationExceptionType;
     public function delete($format = []) {
         throw new Exception('Method not implemented yet');
     }
-    // public function update($format = []) {
-    //     unset($this->data['isNewrecord']);
-    //     $this->data['updated_at'] = date('Y-m-d H:I:s');
-    //     return $this->wpdb->update($this->tableName, $this->data, [
-    //         'id' => $this->id, 
-    //         'field_id' => $this->field_id,
-    //         'registration_uuid' => $this->registration_uuid
-    //     ], $format, ['%d', '%d', '%s']);
-    // }
-
-    // public function delete($id = NULL) {
-    //     $id = isset($id) ? $id : $this->id;
-    //     $success = parent::delete($id);  
-    //     return $success;
-    // }
 
     public static function getSchema() : array {
         return [
