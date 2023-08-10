@@ -1,9 +1,11 @@
-import { MouseEvent, useEffect, useState } from "react"
+import { FormEvent, MouseEvent, PropsWithChildren, useEffect, useState } from "react"
 import { useMDFApi } from "../../hooks"
 import { APIFieldLoad } from "../../types"
 import FieldFactory from "../FieldFactory/FieldFactory"
 import StatusBar, { StatusBarTypeEnum } from "../UI/StatusBar/StatusBar"
 import FieldContainer from "../FieldFactory/Fields/FieldContainer"
+// import useValidation from "../../hooks/use-validation";
+
 
 const Form: React.FC<{ formId:string}> = ({ formId }) => {
     const { isLoading, error, setError, load, req } = useMDFApi()
@@ -14,6 +16,11 @@ const Form: React.FC<{ formId:string}> = ({ formId }) => {
         setError(null);
     }
 
+    const submitHandler = (event:FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log(fields);
+    }
+
     useEffect(() => {
         load(formId)
             .then(data => setFields(data.fields || []))
@@ -21,11 +28,11 @@ const Form: React.FC<{ formId:string}> = ({ formId }) => {
     }, [formId]);
 
     return (
-        <form>
+        <form onSubmit={submitHandler}>
             { error && <StatusBar type={StatusBarTypeEnum.ERROR} message={error} onClick={closeStatusBarHandler}/>}
-            {fields.length > 0 && fields.map(field => <FieldFactory key={field.id} field={field} />) }
+            {fields.length > 0 && fields.map(field => <FieldFactory  field={field} />) }
             <FieldContainer>
-                <button type="button">send</button>
+                <button type="submit">send</button>
             </FieldContainer>
         </form>
     )
