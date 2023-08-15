@@ -15,6 +15,7 @@ const FieldFactory: React.FC<{ field:APIFieldLoad }> = ({ field }) => {
     if(type === FieldTypesEnum.CHECKBOX_GROUP) compField = <CheckboxGroup field={field} htmlId={htmlId} />;
     if(type === FieldTypesEnum.RADIO_GROUP) compField = <RadioGroup field={field} htmlId={htmlId} />;
     if(type === FieldTypesEnum.FILE) compField = <FileField field={field} htmlId={htmlId} />;
+    if(type === FieldTypesEnum.EMAIL) compField = <TextField field={field} htmlId={htmlId} />;
 
     return compField;
 }

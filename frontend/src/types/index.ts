@@ -78,3 +78,22 @@ export enum FieldTypesEnum {
     FILE = 'FILE',
     EMAIL = 'EMAIL',
 }
+
+export type FormRegistrationFields = {
+    field_id: number;
+    field_value: string;
+    validation?:{
+        valid: boolean,
+        errors: string[]
+    };
+}
+
+export type FromContextType = {
+    formId: number|null;
+    fields: FormRegistrationFields[];
+    formValid:boolean;
+    setFormId: (formId:number) => void,
+    add: (value:FormRegistrationFields, rules:string) => void;
+    get: (fieldId: number) => FormRegistrationFields|undefined;
+    submit: () => void;
+}

@@ -1,16 +1,20 @@
+import { ChangeEvent, useContext } from "react";
 import useValidation from "../../../hooks/use-validation";
-import { APIFieldLoad } from "../../../types";
+import { APIFieldLoad, FormRegistrationFields } from "../../../types";
 import FieldContainer from "./FieldContainer";
+import { FormContext } from "../../../store/form-context";
 
 const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, htmlId }) => {
-    const { 
-        value, 
-        isValid, 
-        hasErrors, 
-        errors, 
-        onChangeHandler, 
-        onBlurHandler, 
-        reset } = useValidation('', field.field_validations);
+    const formContext = useContext(FormContext);
+
+    const changeHandler = (event:ChangeEvent<HTMLInputElement>) => {
+        formContext.add({ 
+            field_id:field.id, 
+            field_value: event.target.value
+        }, field.field_validations);
+    }
+
+    const fieldValue:FormRegistrationFields|undefined = formContext.get(field.id);
 
     return (
         <FieldContainer>
@@ -19,11 +23,9 @@ const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, h
                 id={htmlId}
                 type={field.field_type} 
                 name={field.field_name}
-                value={value}
-                defaultValue=''
-                onChange={onChangeHandler}
-                onBlur={onBlurHandler} />
-            { !isValid && <p>{ errors[0] }</p> }
+                value={fieldValue?.field_value}
+                onChange={changeHandler} />
+            { !fieldValue?.validation?.valid && <p>{ fieldValue?.validation?.errors[0] }</p> }
         </FieldContainer>
     )
 }
