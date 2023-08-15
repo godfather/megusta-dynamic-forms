@@ -49,17 +49,12 @@ const validate = (value:string, validationRules:string)  => {
             }
         });
 
-        if(errors.length > 0) {
-            return false;
-        }
-
+        if(errors.length > 0) return false;
         return true;
     }
 
-    const isValid = checkIsValid();
-    
     return {
-        valid: isValid, 
+        valid: checkIsValid(), 
         errors,
     };
 }

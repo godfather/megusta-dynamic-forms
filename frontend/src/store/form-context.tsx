@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from "react";
 import { FormRegistrationFields, FromContextType } from "../types";
-import validate from "../hooks/use-validation2";
+import validate from "../libs/validator/validation";
 
 export const FormContext = React.createContext<FromContextType>({
     formId:null,
