@@ -14,8 +14,8 @@ const validateMin = (value:string, constraint:number, required:boolean): boolean
 }
 
 const validateEmail = (value:string): boolean => {
-    if(/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(value.trim())) 
-        throw new Error('Value length is to small');
+    if(!/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/.test(value.trim())) 
+        throw new Error('Invalid email format.');
     return true;
 }
 
