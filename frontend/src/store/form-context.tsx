@@ -2,6 +2,7 @@ import React, { PropsWithChildren, useState } from "react";
 import { FormRegistrationFields, FromContextType } from "../types";
 import validate from "../libs/validator/validation";
 
+
 export const FormContext = React.createContext<FromContextType>({
     formId:null,
     fields:[],
@@ -9,7 +10,7 @@ export const FormContext = React.createContext<FromContextType>({
     setFormId: (formId:number) => {},
     add: (values:FormRegistrationFields, rules:string) => {},
     get: (fieldId: number): FormRegistrationFields | undefined => { return },
-    submit: () => {},
+    submitData: (): { form_id:number, fields:FormRegistrationFields[] } | null => { return null },
 });
 
 const FormContextPorvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -35,14 +36,16 @@ const FormContextPorvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     formValid = fields.length > 0 ? fields.every((field) => field.validation?.valid === true) : false;
 
-    const submitFormHandler = () => {
-        
-        if(!formValid || fields.length === 0) return;
-        console.log(formValid);
-        console.log({
-            form_id: formId,
-            fields: fields
-        });
+    const submitData = () => {
+        if(!formValid) return null;
+
+        return {
+            form_id: formId!,
+            fields: fields.map(field => {
+                delete field.validation
+                return field;   
+            })
+        };
     }
     
     const contextValues: FromContextType = {
@@ -52,7 +55,7 @@ const FormContextPorvider: React.FC<PropsWithChildren> = ({ children }) => {
         setFormId,
         add: addValueHandler,
         get: getFieldValue,
-        submit: submitFormHandler,
+        submitData,
     };
 
     return (

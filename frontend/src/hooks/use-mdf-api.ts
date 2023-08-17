@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { 
+    FormRegistrationFields,
     FormSendType, 
     FormType, 
     FormWithFieldsType, 
@@ -9,7 +10,7 @@ import {
 } from '../types';
 
 const mountUrl = (uri: string|null): string => {
-    const BASE_PATH = '/wp-json/mdf/v1/forms/';
+    const BASE_PATH = '/wp-json/mdf/v1/';
     let url = `//local.woo.com${BASE_PATH}`;
 
     // if(process.env.NODE_ENV !== 'development') url = BASE_PATH;
@@ -22,12 +23,12 @@ const useMDFApi = () => {
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ error, setError ] = useState<string|null>(null);
 
-    const list = (): Promise<FormType[]> => req({ url:mountUrl(null) });
+    const list = (): Promise<FormType[]> => req({ url:mountUrl('forms') });
 
-    const load = (id:string): Promise<FormWithFieldsType> => req({ url:mountUrl(id) });
+    const load = (id:string): Promise<FormWithFieldsType> => req({ url:mountUrl(`forms/${id}`) });
 
-    const send = (id:string|number|null, body:FormSendType): Promise<ResponseBoolean> => req({
-        url:mountUrl(id ? id.toString(): null),
+    const send = (body:{form_id:number, fields:FormRegistrationFields[]}): Promise<ResponseBoolean> => req({
+        url:mountUrl('register'),
         method:RequestTypeEnum.POST,
         headers: { 'Content-Type': 'application/json'},
         body: body
