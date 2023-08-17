@@ -3,14 +3,7 @@
         box-sizing: border-box;
         padding: 10px 0;
     }
-
-    &__label {
-        display: block;
-        width: 100%;
-        margin-bottom: 3px;
-        font-weight: 600;
-    }
-
+    
     &__textfield,
     &__textarea {
         font-family: inherit;

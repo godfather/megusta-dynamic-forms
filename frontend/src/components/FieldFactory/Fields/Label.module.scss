@@ -1,0 +1,12 @@
+.mdf {
+    &__label {
+        display: block;
+        width: 100%;
+        margin-bottom: 3px;
+        font-weight: 600;
+
+        &--required {
+            color: red;
+        }
+    }
+}

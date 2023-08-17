@@ -5,6 +5,7 @@ import FieldContainer from "./FieldContainer";
 import { FormContext } from "../../../store/form-context";
 
 import css from './Field.module.scss';
+import Label from "./Label";
 
 const TextArea: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, htmlId }) => {
     const formContext = useContext(FormContext);
@@ -17,11 +18,12 @@ const TextArea: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, ht
     }
 
     const fieldValue:FormRegistrationFields|undefined = formContext.get(field.id);
+    const isRequired = /required/.test(field.field_validations);
     const valid = fieldValue?.validation?.valid || false;
 
     return (
         <FieldContainer>
-            <label className={css['mdf__label']} htmlFor={htmlId}>{ field.field_label }</label>
+            <Label text={field.field_label} htmlId={htmlId} required={isRequired} />
             <textarea 
                 className={css['mdf__textarea']}
                 id={htmlId}
