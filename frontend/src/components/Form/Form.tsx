@@ -6,6 +6,8 @@ import StatusBar, { StatusBarTypeEnum } from "../UI/StatusBar/StatusBar"
 import FieldContainer from "../FieldFactory/Fields/FieldContainer"
 import { FormContext } from "../../store/form-context"
 
+import css from './Form.module.scss';
+import Box from "../UI/Box/Box"
 
 const Form: React.FC<{ formId:string}> = ({ formId }) => {
     const { isLoading, error, setError, load, send } = useMDFApi()
@@ -36,14 +38,16 @@ const Form: React.FC<{ formId:string}> = ({ formId }) => {
     }, []);
 
     return (
-            <form onSubmit={submitHandler}>
+        <Box>
+            <form className={css['mdf-form']} onSubmit={submitHandler}>
                 { error && <StatusBar type={StatusBarTypeEnum.ERROR} message={error} onClick={closeStatusBarHandler}/>}
                 { submitResponse && <StatusBar type={StatusBarTypeEnum.SUCCESS} message='Success!' onClick={closeStatusBarHandler}/>}
                 {fields.length > 0 && fields.map((field, i) => <FieldFactory  key={i} field={field} />) }
                 <FieldContainer>
-                    <button type="submit" disabled={!formContext.formValid}>send</button>
+                    <button className={css['mdf__submit']} type="submit" disabled={!formContext.formValid}>send</button>
                 </FieldContainer>
             </form>
+        </Box>
     )
 }
 

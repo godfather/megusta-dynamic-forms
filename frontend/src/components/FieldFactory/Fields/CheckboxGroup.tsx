@@ -1,6 +1,7 @@
 import { APIFieldLoad } from "../../../types";
 import Checkbox from "./Checkbox";
 import FieldContainer from "./FieldContainer";
+import css from './Field.module.scss';
 
 const CheckboxGroup: React.FC<{ field:APIFieldLoad, htmlId: string }> = ({ field, htmlId }) => {
     const fieldOptions = field.field_options?.split(';') || [];
@@ -9,7 +10,7 @@ const CheckboxGroup: React.FC<{ field:APIFieldLoad, htmlId: string }> = ({ field
 
     return (
         <FieldContainer>
-            <label htmlFor={htmlId}>{field.field_label}</label>
+            <label className={css['mdf__label']} htmlFor={htmlId}>{field.field_label}</label>
             {options}
         </FieldContainer>
     );

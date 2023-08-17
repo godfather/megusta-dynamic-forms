@@ -1,0 +1,31 @@
+.mdf {
+    &__container {
+        box-sizing: border-box;
+        padding: 10px 0;
+    }
+
+    &__label {
+        display: block;
+        width: 100%;
+        margin-bottom: 3px;
+        font-weight: 600;
+    }
+
+    &__textfield,
+    &__textarea {
+        font-family: inherit;
+        box-sizing: border-box;
+        width: 100%;
+        font-size: 12px;
+        line-height: 24px;
+        padding: 5px 15px;
+        border-radius: 5px;
+        border: 1px solid #333;
+    }
+
+    &__error {
+        font-size: 10px;
+        color: red;
+        margin-top: 0;
+    }
+}

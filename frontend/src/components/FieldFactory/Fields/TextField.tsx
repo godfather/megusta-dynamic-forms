@@ -4,6 +4,8 @@ import { APIFieldLoad, FormRegistrationFields } from "../../../types";
 import FieldContainer from "./FieldContainer";
 import { FormContext } from "../../../store/form-context";
 
+import css from './Field.module.scss';
+
 const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, htmlId }) => {
     const formContext = useContext(FormContext);
 
@@ -15,17 +17,21 @@ const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, h
     }
 
     const fieldValue:FormRegistrationFields|undefined = formContext.get(field.id);
-
+    const valid = (fieldValue?.validation?.valid || false);
+    console.log(field);
+    
     return (
         <FieldContainer>
-            <label htmlFor={htmlId}>{ field.field_label } </label>
+            <label className={css['mdf__label']} htmlFor={htmlId}>{ field.field_label } </label>
             <input
+                className={css['mdf__textfield']}
                 id={htmlId}
                 type={field.field_type} 
                 name={field.field_name}
-                value={fieldValue?.field_value}
+                placeholder={field.field_tip}
+                value={fieldValue?.field_value || ''}
                 onChange={changeHandler} />
-            { !fieldValue?.validation?.valid && <p>{ fieldValue?.validation?.errors[0] }</p> }
+            { !valid && fieldValue?.validation?.errors && <p className={css['mdf__error']}>{ fieldValue?.validation?.errors[0] }</p> }
         </FieldContainer>
     )
 }

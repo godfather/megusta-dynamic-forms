@@ -1,6 +1,7 @@
 import { APIFieldLoad } from "../../../types";
 import Radio from "./Radio";
 import FieldContainer from "./FieldContainer";
+import css from './Field.module.scss';
 
 const RadioGroup: React.FC<{ field:APIFieldLoad, htmlId:string }> = ({ field, htmlId }) => {
     const fieldOptions = field.field_options?.split(';') || [];
@@ -8,7 +9,7 @@ const RadioGroup: React.FC<{ field:APIFieldLoad, htmlId:string }> = ({ field, ht
 
     return (
         <FieldContainer>
-            <label>{field.field_label}</label>
+            <label className={css['mdf__label']}>{field.field_label}</label>
             {options}
         </FieldContainer>
     );

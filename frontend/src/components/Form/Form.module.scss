@@ -1,0 +1,21 @@
+.mdf {
+    &__submit {
+        font-size: 16px;
+        text-transform: capitalize;
+        font-weight: 600;
+        padding: 10px 30px;
+        border: none;
+        opacity: .8;
+        cursor: pointer;
+        background-color: #000;
+        color: #fff;
+
+        &:hover {
+            opacity: 1;
+        }
+
+        &:disabled {
+            opacity: .6;
+        }
+    }
+}
