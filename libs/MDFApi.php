@@ -36,48 +36,54 @@
 
     public function generateRoutes() {
         register_rest_route(self::NAMESPACE, self::ENDPOINT, [[
-            'methods' => WP_REST_Server::CREATABLE, 
-            'callback' => [$this, 'createForm'],
-            'args' => MDFFormModel::getArgs(),
-            'permission_callback' => $this->getPermission(),
-            'schema' => MDFFormModel::getSchema(),
-        ]]);
+               'methods' => WP_REST_Server::CREATABLE, 
+               'callback' => [$this, 'createForm'],
+               'args' => MDFFormModel::getArgs(),
+               'permission_callback' => $this->getPermission(),
+            ],
+            'schema' => [$this, 'get_item_schema'],
+         ]);
 
         register_rest_route(self::NAMESPACE, self::ENDPOINT, [[ 
-            'methods' => WP_REST_Server::READABLE, 
-            'callback' => [$this, 'list'],
-            'permission_callback' => $this->getPermission(),
-            'schema' => MDFFormModel::getSchema(),
-         ]]);
+               'methods' => WP_REST_Server::READABLE, 
+               'callback' => [$this, 'list'],
+               'permission_callback' => $this->getPermission(),
+            ],
+            'schema' => [$this, 'get_item_schema'],
+         ]);
    
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
-            'methods' => WP_REST_Server::READABLE, 
-            'callback' => [$this, 'load'],
-            'permission_callback' => $this->getPermission(),
-            'schema' => MDFFormModel::getSchema(),
-         ]]);
+               'methods' => WP_REST_Server::READABLE, 
+               'callback' => [$this, 'load'],
+               'permission_callback' => $this->getPermission(),
+            ],
+            'schema' => [$this, 'get_item_schema'],
+         ]);
    
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
-            'methods' => WP_REST_Server::EDITABLE, 
-            'callback' => [$this, 'update'],
-            'args' => MDFFormModel::getArgs(),
-            'permission_callback' => $this->getPermission(),
-            'schema' => MDFFormModel::getSchema(),
-         ]]);
+               'methods' => WP_REST_Server::EDITABLE, 
+               'callback' => [$this, 'update'],
+               'args' => MDFFormModel::getArgs(),
+               'permission_callback' => $this->getPermission(),
+            ],
+            'schema' => [$this, 'get_item_schema'],
+         ]);
    
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
-            'methods' => WP_REST_Server::DELETABLE, 
-            'callback' => [$this, 'delete'],
-            'permission_callback' => $this->getPermission(),
-            'schema' => MDFFormModel::getSchema(),
-         ]]);
+               'methods' => WP_REST_Server::DELETABLE, 
+               'callback' => [$this, 'delete'],
+               'permission_callback' => $this->getPermission(),
+            ],
+            'schema' => [$this, 'get_item_schema'],
+         ]);
 
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<formid>[\d]+)/fields/(?P<id>[\d]+)', [[ 
-            'methods' => WP_REST_Server::DELETABLE, 
-            'callback' => [$this, 'deleteField'],
-            'permission_callback' => $this->getPermission(),
-            'schema' => MDFFieldModel::getSchema(),
-         ]]);
+               'methods' => WP_REST_Server::DELETABLE, 
+               'callback' => [$this, 'deleteField'],
+               'permission_callback' => $this->getPermission(),
+            ],
+            'schema' => [$this, 'get_item_schema'],
+         ]);
 
          register_rest_route(self::NAMESPACE, self::FRONTEND_ENDPOINT, [[ 
             'methods' => WP_REST_Server::CREATABLE, 
