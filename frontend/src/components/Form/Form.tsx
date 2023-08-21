@@ -32,9 +32,10 @@ const Form: React.FC<{ formId:string}> = ({ formId }) => {
 
     useEffect(() => {
         formContext.setFormId(parseInt(formId));
-        load(formId)
-            .then(data => setFields(data.fields || []))
-            .catch(error => setError(error.message));
+        load(formId).then(data => {
+            const dataFields = data.fields || [];
+            setFields(dataFields.sort((a, b) => a.position - b.position));
+        }).catch(error => setError(error.message));
     }, []);
 
     return (
