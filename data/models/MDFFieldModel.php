@@ -72,7 +72,8 @@ use MDF\Data\MDFDatabaseDefinition;
             'file',
             'hidden',
             'radio_group',
-            'checkbox_group'
+            'checkbox_group',
+            'checkbox',
         ];
      }
 

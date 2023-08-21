@@ -18,19 +18,18 @@ const TextArea: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, ht
     }
 
     const fieldValue:FormRegistrationFields|undefined = formContext.get(field.id);
-    const isRequired = /required/.test(field.field_validations);
     const valid = fieldValue?.validation?.valid || false;
 
     return (
         <FieldContainer>
-            <Label text={field.field_label} htmlId={htmlId} required={isRequired} />
+            <Label text={field.field_label} htmlId={htmlId} required={field.required} />
             <textarea 
                 className={css['mdf__textarea']}
                 id={htmlId}
                 name={field.field_name}
                 placeholder={field.field_tip}
                 value={fieldValue?.field_value || ''}
-                required={isRequired}
+                required={field.required}
                 onChange={changeHandler}
                 />
                 { !valid && <p className={css['mdf__error']}>{ fieldValue?.validation?.errors[0] }</p> }

@@ -18,12 +18,11 @@ const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, h
     }
 
     const fieldValue:FormRegistrationFields|undefined = formContext.get(field.id);
-    const isRequired = /required/.test(field.field_validations);
     const valid = (fieldValue?.validation?.valid || false);
     
     return (
         <FieldContainer>
-            <Label htmlId={htmlId} text={ field.field_label } required={isRequired} />
+            <Label htmlId={htmlId} text={ field.field_label } required={field.required} />
             <input
                 className={css['mdf__textfield']}
                 id={htmlId}
@@ -31,7 +30,7 @@ const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, h
                 name={field.field_name}
                 placeholder={field.field_tip}
                 value={fieldValue?.field_value || ''}
-                required={isRequired}
+                required={field.required}
                 onChange={changeHandler} />
             { !valid && fieldValue?.validation?.errors && <p className={css['mdf__error']}>{ fieldValue?.validation?.errors[0] }</p> }
         </FieldContainer>

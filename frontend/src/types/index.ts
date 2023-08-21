@@ -47,6 +47,7 @@ export type APIFieldLoad = {
     id: number;
     form_id: number;
     position: number;
+    required?:boolean;
     field_type: string;
     field_name: string;
     field_label: string;

@@ -34,7 +34,10 @@ const Form: React.FC<{ formId:string}> = ({ formId }) => {
         formContext.setFormId(parseInt(formId));
         load(formId).then(data => {
             const dataFields = data.fields || [];
-            setFields(dataFields.sort((a, b) => a.position - b.position));
+            setFields(dataFields.sort((a, b) => a.position - b.position).map(field => {
+                field.required = /required/.test(field.field_validations);
+                return field;
+            }));
         }).catch(error => setError(error.message));
     }, []);
 
