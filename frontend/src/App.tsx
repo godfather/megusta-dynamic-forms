@@ -1,11 +1,11 @@
 import Form from "./components/Form/Form";
 import FormContextPorvider from "./store/form-context";
 
-function App() {
+const App: React.FC<{formId: string }> = ({ formId }) => {
     return (
         <FormContextPorvider>
             <div className="App">
-                <Form formId="1" />
+                <Form formId={formId} />
             </div>
         </FormContextPorvider>
     );
