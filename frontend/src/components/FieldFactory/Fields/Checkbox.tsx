@@ -1,8 +1,17 @@
+import { ChangeEvent } from "react";
 import { APIFieldLoad } from "../../../types";
 
-const Checkbox: React.FC<{ field:APIFieldLoad, value?:string, htmlId: string }> = ({ field, value, htmlId }) => {
-
+const Checkbox: React.FC<{ 
+    field:APIFieldLoad, 
+    value?:string, 
+    htmlId: string 
+    onChange?: (checked: boolean, value:string) => void
+}> = ({ field, value, htmlId, onChange }) => {
     const label = value ? value : field.field_label; 
+    
+    const onChangeHandler = (event:ChangeEvent<HTMLInputElement>): void => {
+        if(onChange) onChange(event.target.checked, event.target.value);
+    }
 
     return (
         <label htmlFor={htmlId}>
@@ -10,7 +19,8 @@ const Checkbox: React.FC<{ field:APIFieldLoad, value?:string, htmlId: string }> 
                 id={htmlId}
                 type="checkbox" 
                 name={field.field_name}
-                value={value} />
+                value={value}
+                onChange={onChangeHandler} />
             {label}
         </label>
     );
