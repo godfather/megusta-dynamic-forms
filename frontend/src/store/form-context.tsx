@@ -20,7 +20,6 @@ const FormContextPorvider: React.FC<PropsWithChildren> = ({ children }) => {
 
     const addValueHandler = (value: FormRegistrationFields, rules:string) => {
         value.validation = validate(value.field_value, rules);
-        console.log(value)
         setFields(state => {
             const newState = [...state];
             const exists = newState.findIndex(val => val.field_id === value.field_id);
@@ -37,7 +36,7 @@ const FormContextPorvider: React.FC<PropsWithChildren> = ({ children }) => {
     formValid = fields.length > 0 ? fields.every((field) => field.validation?.valid === true) : false;
 
     const submitData = () => {
-        if(!formValid) return null;
+        if(!formValid ) return null;
 
         return {
             form_id: formId!,
