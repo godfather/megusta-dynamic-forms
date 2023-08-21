@@ -29,6 +29,8 @@ class MegustaDynamicForms {
         add_action('admin_init', [static::class, 'enqueueAdminScripts']);
         add_action('admin_menu', [static::class, 'createAdminMenus']);
         add_action('wp_enqueue_scripts', [static::class, 'enqueueFrontendScripts']);
+        
+        add_shortcode('MDFform', [ static::class, 'generateMDFShorCode']);
     }
 
     public static function onActiveHandler() {
@@ -73,10 +75,17 @@ class MegustaDynamicForms {
             $cssLoadStyles = plugin_dir_url( __FILE__ ) . 'ghost-inspector.css'; //update this path
         }
 
-        wp_enqueue_style('megusta_dynamic_forms_css', $cssLoadStyles);
-        wp_enqueue_script('megusta_dynamic_forms_js', $jsLoadScript, '', mt_rand(10,1000), true);
+        wp_register_style('megusta_dynamic_forms_css', $cssLoadStyles, [], '1.0.0', 'all');
+        wp_register_script('megusta_dynamic_forms_js', $jsLoadScript, [], '1.0.0', []);
         wp_localize_script( 'Megusta_Dynamic_Forms_public', 'MDFPublic',[
-            'mdf_nonce' => wp_create_nonce(self::MEGUSTA_NONCE_KEY)
+            'mdf_nonce' => wp_create_nonce(self::MDF_NONCE_KEY)
         ]);
+    }
+
+    public static function generateMDFShorCode($attrs) {
+        wp_enqueue_script('megusta_dynamic_forms_js');
+        wp_enqueue_style('megusta_dynamic_forms_css');
+        $attrs = shortcode_atts(['id' => ''], $attrs);
+        return "<div class='mdf' id='mdf-root' data-formId='{$attrs['id']}'></div>";
     }
 }

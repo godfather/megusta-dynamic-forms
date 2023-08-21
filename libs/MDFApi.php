@@ -45,39 +45,39 @@
 
         register_rest_route(self::NAMESPACE, self::ENDPOINT, [[ 
             'methods' => WP_REST_Server::READABLE, 
-            'callback' => [$this, 'list']],
+            'callback' => [$this, 'list'],
             'permission_callback' => $this->getPermission(),
             'schema' => MDFFormModel::getSchema(),
-         ]);
+         ]]);
    
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
             'methods' => WP_REST_Server::READABLE, 
-            'callback' => [$this, 'load']],
+            'callback' => [$this, 'load'],
             'permission_callback' => $this->getPermission(),
             'schema' => MDFFormModel::getSchema(),
-         ]);
+         ]]);
    
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
             'methods' => WP_REST_Server::EDITABLE, 
-            'callback' => [$this, 'update']],
+            'callback' => [$this, 'update'],
             'args' => MDFFormModel::getArgs(),
             'permission_callback' => $this->getPermission(),
             'schema' => MDFFormModel::getSchema(),
-         ]);
+         ]]);
    
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<id>[\d]+)', [[ 
             'methods' => WP_REST_Server::DELETABLE, 
-            'callback' => [$this, 'delete']],
+            'callback' => [$this, 'delete'],
             'permission_callback' => $this->getPermission(),
             'schema' => MDFFormModel::getSchema(),
-         ]);
+         ]]);
 
          register_rest_route(self::NAMESPACE, self::ENDPOINT . '/(?P<formid>[\d]+)/fields/(?P<id>[\d]+)', [[ 
             'methods' => WP_REST_Server::DELETABLE, 
-            'callback' => [$this, 'deleteField']],
+            'callback' => [$this, 'deleteField'],
             'permission_callback' => $this->getPermission(),
             'schema' => MDFFieldModel::getSchema(),
-         ]);
+         ]]);
 
          register_rest_route(self::NAMESPACE, self::FRONTEND_ENDPOINT, [[ 
             'methods' => WP_REST_Server::CREATABLE, 
@@ -152,7 +152,7 @@
 
     private function getPermission() {
         return '__return_true';
-        return current_user_can( 'edit_posts' ) ? '__return_true' : '__return_false';
+      //   return current_user_can( 'edit_posts' ) ? '__return_true' : '__return_false';
     }
 
     public function get_item_schema() {
