@@ -31,6 +31,7 @@ const TextField: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, h
                 name={field.field_name}
                 placeholder={field.field_tip}
                 value={fieldValue?.field_value || ''}
+                required={isRequired}
                 onChange={changeHandler} />
             { !valid && fieldValue?.validation?.errors && <p className={css['mdf__error']}>{ fieldValue?.validation?.errors[0] }</p> }
         </FieldContainer>

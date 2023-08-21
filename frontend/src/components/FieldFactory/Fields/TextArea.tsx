@@ -30,6 +30,7 @@ const TextArea: React.FC<{ field: APIFieldLoad, htmlId: string }> = ({ field, ht
                 name={field.field_name}
                 placeholder={field.field_tip}
                 value={fieldValue?.field_value || ''}
+                required={isRequired}
                 onChange={changeHandler}
                 />
                 { !valid && <p className={css['mdf__error']}>{ fieldValue?.validation?.errors[0] }</p> }
