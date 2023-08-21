@@ -93,7 +93,7 @@ export type FromContextType = {
     formId: number|null;
     fields: FormRegistrationFields[];
     formValid:boolean;
-    setFormId: (formId:number) => void,
+    setFormId: (formId:number) => void;
     add: (value:FormRegistrationFields, rules:string) => void;
     get: (fieldId: number) => FormRegistrationFields|undefined;
     submitData: () => { form_id: number, fields: FormRegistrationFields[] } | null;
